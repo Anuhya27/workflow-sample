@@ -26,4 +26,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: devopshint/node-app:latest
+          tags: anuhya1727/sample-workflow:latest
