@@ -1,11 +1,6 @@
-FROM node:14
-
-WORKDIR /usr/src/app
-
-COPY package.json .
-RUN npm install 
-COPY . .
-
-EXPOSE 3000
-
-CMD ["node", "index.js"]
+FROM python:3.10
+WORKDIR /first_cluster
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY test.py .
+CMD [ "python", "./test.py"]
