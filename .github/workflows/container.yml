@@ -2,11 +2,13 @@ name: Build and push image to ECR
 
 on:
     push:
-      
+
     pull_request:
       branches:
         - prod*
         - uat*
+      types:
+        -   closed
 
 jobs:
   
