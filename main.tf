@@ -1,16 +1,16 @@
 variable "region" {}
 variable "vpc_name" {}
 
-terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-      version = "5.31.0"
-    }
-  }
-  required_version = ">=0.14.9"
+# terraform {
+#   required_providers {
+#     aws = {
+#       source = "hashicorp/aws"
+#       version = "5.31.0"
+#     }
+#   }
+#   required_version = ">=0.14.9"
 
-}
+# }
 
 provider "aws" {
     version = "5.31.0"
