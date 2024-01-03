@@ -17,8 +17,8 @@
 
 
 # ##############################################
-variable "region" {}
-variable "vpc_name" {}
+# variable "region" {}
+# variable "vpc_name" {}
 
 terraform {
   required_providers {
