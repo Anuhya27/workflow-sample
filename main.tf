@@ -13,7 +13,7 @@ variable "vpc_name" {}
 # }
 
 provider "aws" {
-    version = "5.31.0"
+    version = "~> 3.0"
     region = "us-east-1"
 }
 
