@@ -1,51 +1,48 @@
-terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-      Version = "~>3.10"
-    }
-  }
-
-  required_version = ">=0.14.9"
-
-}
-
-provider "aws" {
-  version = "~>3.0"
-  region  = "east-us-1"
-}
-
-
-
-
-
-##############################################
-# variable "region" {}
-# variable "vpc_name" {}
-
 # terraform {
 #   required_providers {
 #     aws = {
 #       source = "hashicorp/aws"
-#       version = "~>3.10"
+#       Version = "~>3.10"
 #     }
 #   }
+
 #   required_version = ">=0.14.9"
 
 # }
 
 # provider "aws" {
-#     region = "us-east-1"
+#   version = "~>3.0"
+#   region  = "east-us-1"
 # }
 
 
-# resource "aws_instance" "my-first-server" {
-#     ami = "ami-079db87dc4c10ac91"
-#     instance_type = "t2.micro"
-#     tags = {
-#         Name = "Second Instance"
-#     }
-# }
+# ##############################################
+variable "region" {}
+variable "vpc_name" {}
+
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "~>3.10"
+    }
+  }
+  required_version = ">=0.14.9"
+
+}
+
+provider "aws" {
+    region = "us-east-1"
+}
+
+
+resource "aws_instance" "my-first-server" {
+    ami = "ami-079db87dc4c10ac91"
+    instance_type = "t2.micro"
+    tags = {
+        Name = "Second Instance"
+    }
+}
 
 # # data "aws_ami" "latest_amazon_linux" {
 # #     most_recent = true
