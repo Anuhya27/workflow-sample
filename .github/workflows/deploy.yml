@@ -1,0 +1,26 @@
+name: Deploy AWS Resources
+
+on:
+    workflow_dispatch:
+      inputs:
+        region:
+          description: 'Region'
+          required: true
+          default: 'us-east-1'
+        vpc:
+          description: 'VPC Name'
+          required: true
+          default: 'Application-Vpc'
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out code
+              uses: actions/checkout@v2
+
+            - name: Fetch Terraform modules
+              run: terraform init
+
+            - name: Run Terraform apply
+              run: terraform apply -var "region=${{ github.event.inputs.region }}" -var "vpc_name=${{ github.event.inputs.vpc }}" -auto-approve
