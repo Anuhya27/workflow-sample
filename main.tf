@@ -2,7 +2,7 @@ variable "region" {}
 variable "vpc_name" {}
 
 provider "aws" {
-    region = var.region
+    region = "us-east-1"
 }
 
 data "aws_ami" "latest_amazon_linux" {
