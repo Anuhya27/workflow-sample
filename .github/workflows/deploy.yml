@@ -1,16 +1,7 @@
 name: Deploy AWS Resources
 
 on:
-    workflow_dispatch:
-      inputs:
-        region:
-          description: 'Region'
-          required: true
-          default: 'us-east-1'
-        vpc:
-          description: 'VPC Name'
-          required: true
-          default: 'Application-Vpc'
+    push
 
 jobs:
     deploy:
@@ -23,7 +14,7 @@ jobs:
             - name: Setup Terraform
               uses: hashicorp/setup-terraform@v2
               with:
-                terraform_version: 1.4.7  
+                terraform_version: 1.6.0 
 
             - name: Fetch Terraform modules
               run: terraform init
@@ -32,7 +23,7 @@ jobs:
               uses: hashicorp/terraform-github-actions/validate@v0.3.7
         
             - name: Run Terraform apply
-              run: terraform apply -var "region=${{ github.event.inputs.region }}" -var "vpc_name=${{ github.event.inputs.vpc }}" -auto-approve
+              run: terraform apply -var "region=us-east-1" -var "vpc_name=Application-Vpc" -auto-approve
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 TF_ACTION_WORKING_DIR: 'terraform'
