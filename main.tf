@@ -36,7 +36,7 @@ provider "aws" {
 }
 
 
-resource "aws_instance" "my-first-server" {
+resource "aws_instance" "my-second-server" {
     ami = "ami-079db87dc4c10ac91"
     instance_type = "t2.micro"
     tags = {
