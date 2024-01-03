@@ -22,10 +22,10 @@ jobs:
             - name: Terraform Validate
               uses: hashicorp/terraform-github-actions/validate@v0.3.7
               env:
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                    TF_ACTION_WORKING_DIR: 'terraform'
-                    AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-                    AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                TF_ACTION_WORKING_DIR: 'terraform'
+                AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+                AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             # - name: Run Terraform apply
             #   run: terraform apply -var "region=us-east-1" -var "vpc_name=Application-Vpc" -auto-approve
             #   env:
