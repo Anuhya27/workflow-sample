@@ -8,6 +8,7 @@ variable "project_family" {
   description = "(Required) Project name of the repository. {project_family}/{environment}/{name}."
 }
 
+
 variable "environment" {
   type = string
   description = "(Optional) Repository environment. {project_family}/{environment}/{name}. Default is prod."
