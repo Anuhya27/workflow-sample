@@ -1,10 +1,11 @@
-import requests
-import time
+import argparse
 
-def main():
-    print("Hello world!")
-    print("Double check")
-    
-    
-if __name__ == "__main__":
-    main()
+parser = argparse.ArgumentParser()
+parser.add_argument("--user_input")
+
+args = parser.parse_args()
+
+if args.user_input is None:
+    print('The user input is none.')
+else:
+    print(f'The user input is {args.user_input}')
