@@ -2,18 +2,19 @@ name: Build and push image to ECR
 
 on:
     push:
-
+      branches:
+        - uat*
+        - ma*
     pull_request:
       branches:
         - prod*
         - uat*
       types:
-        -   closed
+        - closed
 
 jobs:
-  
   build:
-    
+
     name: Build Image
     runs-on: ubuntu-latest
 
@@ -36,9 +37,8 @@ jobs:
     - name: Build, tag, and push image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: sample-workflow
-        IMAGE_TAG: sample-workflow
+        ECR_REPOSITORY: test_ecr
+        IMAGE_TAG: test_ecr_img_3
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-

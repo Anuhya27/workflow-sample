@@ -1,6 +1,17 @@
 name: Build and Push Docker image to Docker Hub
 
-on: push
+on: 
+  push:
+    branches:
+      - uat*
+      - ma*
+  pull_request:
+    branches:
+      - prod*
+      - uat*
+      - ma*
+    types:
+      - closed
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub

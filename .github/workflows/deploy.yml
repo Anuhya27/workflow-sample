@@ -1,7 +1,17 @@
 name: Deploy AWS Resources
 
 on:
-    push
+    push:
+      branches:
+        - uat*
+        - ma*
+    pull_request:
+      branches:
+        - prod*
+        - uat*
+        - ma*
+      types:
+        - closed
 
 jobs:
     deploy:
