@@ -23,9 +23,38 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v2
     
+    # - name: Select environment
+    #   id: select-environment
+    #   run: |
+    #     if [ "${{ github. }}" == "push" ]; then
+    #       echo "production"
+    #       echo "selected-stage=production" >> "$GITHUB_OUTPUT"
+    #     elif [ "${{ github.event_name }}" == "pull_request" ]; then
+    #       echo "staging"
+    #       echo "selected-stage=staging" >> "$GITHUB_OUTPUT"
+    #     else
+    #       echo "test"
+    #       echo "selected-stage=test" >> "$GITHUB_OUTPUT"
+    #     fi
+
+    - name: Extract branch name
+      shell: bash
+      run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+      id: extract_branch
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
+        #  |
+        # if [[ "${{github.event.inputs.account}}" == "slb-dev" ]]; then
+        #   echo "AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID_DEV }}" >> $GITHUB_ENV
+        #   echo "AWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY_DEV }}" >> $GITHUB_ENV
+        # fi
+
+        # if [[ "${{github.event.inputs.account}}" == "slb-prod" ]]; then
+        #   echo "AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID_PROD }}" >> $GITHUB_ENV
+        #   echo "AWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY_PROD }}" >> $GITHUB_ENV
+        # fi
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-2
