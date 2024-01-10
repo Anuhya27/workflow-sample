@@ -44,15 +44,32 @@ jobs:
     #     # echo $GITHUB_OUTPUT
     #   id: extract_branch
 
+    - name: Set the value
+      id: step_one  
+      run: |
+        echo "action_state=yellow" >> "$GITHUB_ENV"
+
+    - name: Use the value
+      id: step_two
+      run: |
+        printf '%s\n' "$action_state" # This will output 'yellow'
+
     - name: Extract branch name on push
       if: github.event_name != 'pull_request'
       shell: bash
-      run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF#refs/heads/})"
+      run: 
+        echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
       id: extract_branch
 
     - name: Extract branch name on pull request
       if: github.event_name == 'pull_request'
-      run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"
+      run: 
+        echo "branch=$(echo ${GITHUB_HEAD_REF})" >> $GITHUB_ENV
+
+    - name: Use the value
+      # id: step_two
+      run: |
+        printf '%s\n' "$branch" # This will output 'yellow'
 
     - name: Print branch name
       run: echo 'The branch name is' $BRANCH_NAME
