@@ -23,57 +23,28 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v2
     
-    # - name: Select environment
-    #   id: select-environment
-    #   run: |
-    #     if [ "${{ github. }}" == "push" ]; then
-    #       echo "production"
-    #       echo "selected-stage=production" >> "$GITHUB_OUTPUT"
-    #     elif [ "${{ github.event_name }}" == "pull_request" ]; then
-    #       echo "staging"
-    #       echo "selected-stage=staging" >> "$GITHUB_OUTPUT"
-    #     else
-    #       echo "test"
-    #       echo "selected-stage=test" >> "$GITHUB_OUTPUT"
-    #     fi
-
-    # - name: Extract branch name
-    #   shell: bash
-    #   run: 
-    #     echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-    #     # echo $GITHUB_OUTPUT
-    #   id: extract_branch
-
-    - name: Set the value
-      id: step_one  
-      run: |
-        echo "action_state=yellow" >> "$GITHUB_ENV"
-
-    - name: Use the value
-      id: step_two
-      run: |
-        printf '%s\n' "$action_state" # This will output 'yellow'
-
     - name: Extract branch name on push
-      if: github.event_name != 'pull_request'
-      shell: bash
+      if: github.event_name == 'push'
       run: 
         echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
-      id: extract_branch
 
     - name: Extract branch name on pull request
       if: github.event_name == 'pull_request'
       run: 
         echo "branch=$(echo ${GITHUB_HEAD_REF})" >> $GITHUB_ENV
 
-    - name: Use the value
-      # id: step_two
-      run: |
-        printf '%s\n' "$branch" # This will output 'yellow'
-
     - name: Print branch name
-      run: echo 'The branch name is' $BRANCH_NAME
+      run: echo 'The branch name is' $branch
       
+    - name: Set Environment vairables
+      run: 
+        |
+        if [[ "$branch" == "main"]]; then
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID}}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+          echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
+        fi
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -87,9 +58,9 @@ jobs:
         #   echo "AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID_PROD }}" >> $GITHUB_ENV
         #   echo "AWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY_PROD }}" >> $GITHUB_ENV
         # fi
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-2
+        aws-access-key-id: $AWS_ACCESS_KEY_ID
+        aws-secret-access-key: $AWS_SECRET_ACCESS_KEY
+        aws-region: $AWS_REGION
 
     - name: Login to Amazon ECR
       id: login-ecr
