@@ -28,7 +28,7 @@ jobs:
     - name: Extract branch name on push
       if: github.event_name == 'push'
       run: 
-        echo "branch=${GITHUB.ref_name}" >> $GITHUB_ENV
+        echo "branch=${{github.ref_name}}" >> $GITHUB_ENV
 
     - name: Extract branch name on pull request
       if: github.event_name == 'pull_request'
