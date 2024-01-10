@@ -17,9 +17,9 @@ jobs:
     name: Build Image
     runs-on: ubuntu-latest
 
-    # if: github.event_name == 'pull_request' 
-    # environment: 
-
+    if: github.event_name == 'pull_request' 
+    environment: 
+      
     steps:
 
     - name: Check out code
@@ -28,7 +28,7 @@ jobs:
     - name: Extract branch name on push
       if: github.event_name == 'push'
       run: 
-        echo "branch=$(echo ${GITHUB_HEAD_REF})" >> $GITHUB_ENV
+        echo "branch=${GITHUB.ref_name}" >> $GITHUB_ENV
 
     - name: Extract branch name on pull request
       if: github.event_name == 'pull_request'
@@ -48,33 +48,33 @@ jobs:
           echo "AWS_REGION="secrets.AWS_REGION"" >> $GITHUB_ENV
         fi
 
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     #  |
-    #     # if [[ "${{github.event.inputs.account}}" == "slb-dev" ]]; then
-    #     #   echo "AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID_DEV }}" >> $GITHUB_ENV
-    #     #   echo "AWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY_DEV }}" >> $GITHUB_ENV
-    #     # fi
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        #  |
+        # if [[ "${{github.event.inputs.account}}" == "slb-dev" ]]; then
+        #   echo "AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID_DEV }}" >> $GITHUB_ENV
+        #   echo "AWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY_DEV }}" >> $GITHUB_ENV
+        # fi
 
-    #     # if [[ "${{github.event.inputs.account}}" == "slb-prod" ]]; then
-    #     #   echo "AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID_PROD }}" >> $GITHUB_ENV
-    #     #   echo "AWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY_PROD }}" >> $GITHUB_ENV
-    #     # fI
+        # if [[ "${{github.event.inputs.account}}" == "slb-prod" ]]; then
+        #   echo "AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID_PROD }}" >> $GITHUB_ENV
+        #   echo "AWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY_PROD }}" >> $GITHUB_ENV
+        # fI
 
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} 
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #     aws-region: ${{ env.AWS_REGION.AWS_REGION }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} 
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION.AWS_REGION }}
 
-    # - name: Login to Amazon ECR
-    #   id: login-ecr
-    #   uses: aws-actions/amazon-ecr-login@v1
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
 
-    # - name: Build, tag, and push image to Amazon ECR
-    #   env:
-    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-    #     ECR_REPOSITORY: test_ecr
-    #     IMAGE_TAG: test_ecr_img_3
-    #   run: |
-    #     docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    - name: Build, tag, and push image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: test_ecr
+        IMAGE_TAG: test_ecr_img_3
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
