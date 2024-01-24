@@ -22,7 +22,7 @@ jobs:
             - name: Check out code
               uses: actions/checkout@v4
               with:
-                sparse-checkout: ./terraform
+                sparse-checkout: terraform
                 # fetch-depth: 1
 
             - name: Setup Terraform
