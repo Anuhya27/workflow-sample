@@ -22,8 +22,8 @@ jobs:
             - name: Check out code
               uses: actions/checkout@v2
               with:
-                # path: ./terraform
-                fetch-depth: 1
+                path: ./terraform
+                # fetch-depth: 1
 
             - name: Setup Terraform
               uses: hashicorp/setup-terraform@v2
