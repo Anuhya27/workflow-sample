@@ -58,6 +58,3 @@ resource "aws_batch_job_definition" "program_assessment" {
 #     ],
   })
 }
-
-
-
