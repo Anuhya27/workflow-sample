@@ -1,8 +1,14 @@
 data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
 
 output "current_aws" {
   value = data.aws_caller_identity.current
 }
+
+output "current_aws_region" {
+  value = data.aws_region.current
+}
+
 variable "ecr_image_name" {
   default = "program-assessment"
 }
