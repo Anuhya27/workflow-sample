@@ -24,10 +24,10 @@ jobs:
         steps:
             - name: Check out code
               uses: actions/checkout@v4
-              # with:
+              with:
               #   sparse-checkout: |
               #         terraform
-                # fetch-depth: 1
+                fetch-depth: 2
 
             - name: Setup Terraform
               uses: hashicorp/setup-terraform@v2
