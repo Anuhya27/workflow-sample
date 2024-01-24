@@ -46,15 +46,5 @@ resource "aws_batch_job_definition" "program_assessment" {
       operatingSystemFamily = "LINUX",
       cpuArchitecture       = "ARM64",
     },
-# environment = [
-#       {
-#         name  = "OperatingSystemFamily",
-#         value = "LIARM64NUX",
-#       },
-#       {
-#         name  = "CpuArchitecture",
-#         value = "ARM64",
-#       },
-#     ],
   })
 }
