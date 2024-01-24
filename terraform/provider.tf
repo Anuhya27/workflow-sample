@@ -22,5 +22,5 @@ provider "aws" {
 
 variable "AWS_REGION" {
   description = "AWS region to deploy resources"
-#   default     = "us-east-1"  # Set a default region or leave it empty
+  default     = "us-east-1"  # Set a default region or leave it empty
 }
