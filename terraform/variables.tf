@@ -9,11 +9,6 @@ output "current_aws_region" {
   value = data.aws_region.current
 }
 
-variable "aws_region" {
-  description = "AWS region to deploy resources"
-#   default     = "us-east-1"  # Set a default region or leave it empty
-}
-
 variable "ecr_image_name" {
   default = "program-assessment"
 }
