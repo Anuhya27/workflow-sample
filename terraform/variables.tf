@@ -1,5 +1,8 @@
 data "aws_caller_identity" "current" {}
 
+output "current_aws" {
+  value = data.aws_caller_identity.current
+}
 variable "ecr_image_name" {
   default = "program-assessment"
 }
