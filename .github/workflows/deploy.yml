@@ -31,7 +31,7 @@ jobs:
                 fetch-depth: 2
                 submodules: true
             - name: Set AWS Region
-              run: echo "AWS_REGION=test" >> $GITHUB_ENV
+              run: echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
     
             - name: Display AWS Region
               run: echo "AWS Region = $AWS_REGION"
@@ -42,7 +42,7 @@ jobs:
                 terraform_version: 1.6.0 
 
             - name: Fetch Terraform modules
-              run: terraform init -backend-config="region=$AWS_REGION"
+              run: terraform init -backend-config="region=${AWS_REGION}"
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
