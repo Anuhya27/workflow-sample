@@ -3,12 +3,13 @@ name: Build and push image to ECR
 on:
     push:
       branches:
-        - uat*
-        - ma*
+        - uat
+        - main
     pull_request:
       branches:
-        - prod*
-        - uat*
+        - prod
+        - uat
+        - main
       types:
         - closed
 

@@ -1,41 +1,33 @@
-variable "name" {
-  type = string
-  description = "(Required) Name of the repository. {project_family}/{environment}/{name}."
+data "aws_caller_identity" "current" {}
+
+variable "ecr_image_name" {
+  default = "program-assessment"
 }
 
-variable "project_family" {
-  type = string
-  description = "(Required) Project name of the repository. {project_family}/{environment}/{name}."
+variable "compute_env_name" {
+  default = "program_assessment"
 }
 
-variable "environment" {
-  type = string
-  description = "(Optional) Repository environment. {project_family}/{environment}/{name}. Default is prod."
-  default = "prod"
+variable "iam_role_name" {
+  default = "program_assessment"
 }
 
-variable "image_tag_mutability" {
-  type = string
-  description = "(Optional) The tag mutability setting for the repository. Must be one of: MUTABLE or IMMUTABLE. Defaults to MUTABLE"
-  default = "MUTABLE"
+data "aws_ecr_image" "program_assessment" {
+  repository_name = "test_ecr"
+  most_recent       = true
 }
 
-variable "scan_on_push" {
-  type = bool
-  description = "(Required) Indicates whether images are scanned after being pushed to the repository (true) or not scanned (false)."
-  default = true
+##### IAM POLICIES #####
+variable "program_assessment_role_policies" {
+  default = ["arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy", "arn:aws:iam::aws:policy/service-role/AWSBatchServiceRole"]
 }
 
-variable "additional_tags" {
-  type = map(string)
-  description = "(Optional) A map of tags to assign to the resource."
-  default = {}
+##### SUBNETS #####
+variable "subnets" {
+  default = ["subnet-0069df4a11c71f83b", "subnet-08c54de6284fdd84e", "subnet-01c7dc9aa84b68143"]
 }
 
-
-variable "expiration_after_days" {
-  type = number
-  description = "(Optional) Delete images older than X days."
-  default = 0
-
+##### SECURITY GROUPS #####
+variable "security_groups" {
+  default = ["sg-065d8bff00070debc"]
 }

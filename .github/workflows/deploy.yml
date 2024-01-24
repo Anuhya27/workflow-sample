@@ -3,23 +3,26 @@ name: Deploy AWS Resources
 on:
     push:
       branches:
-        - uat*
-        - ma*
+        - uat
+        - main
     pull_request:
       branches:
-        - prod*
-        - uat*
-        - ma*
+        - prod
+        - uat
+        - main
       types:
         - closed
 
 jobs:
     deploy:
         runs-on: ubuntu-latest
+        environment: ${{github.ref_name}}
+
         steps:
-                
             - name: Check out code
               uses: actions/checkout@v2
+              with:
+                path: ../terraform
 
             - name: Setup Terraform
               uses: hashicorp/setup-terraform@v2
@@ -31,42 +34,19 @@ jobs:
             
             - name: Terraform Validate
               run: terraform validate
-            #   uses: hashicorp/terraform-github-actions/validate@v0.3.7
-            #   env:
-            #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            #     # TF_ACTION_WORKING_DIR: 'terraform'
-            #     AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-            #     AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-            # - name: Run Terraform apply
-            #   run: terraform apply -var "region=us-east-1" -var "vpc_name=Application-Vpc" -auto-approve
-            #   env:
-            #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            #     TF_ACTION_WORKING_DIR: 'terraform'secrets
-            #     AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-            #     AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
             
-            # - name: Terraform Plan
-            #   run: terraform plan
-            #   env:
-            #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            #     # TF_ACTION_WORKING_DIR: 'terraform'
-            #     AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-            #     AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            - name: Terraform Plan
+              run: terraform plan
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+                AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                AWS_REGION: ${{ secrets.AWS_REGION }}
 
-            # - name: Terraform Apply
-            #   run: terraform apply -auto-approve
-            #   env:
-            #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            #         # TF_ACTION_WORKING_DIR: 'terraform'
-            #         AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-            #         AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-            #     #  
-            # #   uses: hashicorp/terraform-github-actions/apply@v0.4.0
-            # #   env:
-            # #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            # #     TF_ACTION_WORKING_DIR: 'terraform'
-            # #     AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-            # #     AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            - name: Terraform Apply
+              run: terraform apply -auto-approve
+              env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+                    AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                    AWS_REGION: ${{ secrets.AWS_REGION }}
