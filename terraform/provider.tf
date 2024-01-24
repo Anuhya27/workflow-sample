@@ -17,14 +17,13 @@ terraform {
 
 variable "AWS_REGION" {
   description = "AWS region to deploy resources"
-  default     = "us-east-1"  # Set a default region or leave it empty
+#   default     = "us-east-1"  # Set a default region or leave it empty
 }
 
 provider "aws" {
     region = var.AWS_REGION
   # Other provider configuration options, if needed
 }
-
 
 output "AWS_REGION" {
     value = var.AWS_REGION
