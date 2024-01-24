@@ -1,6 +1,11 @@
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
+variable "aws_region" {
+  description = "AWS region to deploy resources"
+#   default     = "us-east-1"  # Set a default region or leave it empty
+}
+
 output "current_aws" {
   value = data.aws_caller_identity.current
 }
