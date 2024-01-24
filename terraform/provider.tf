@@ -26,5 +26,5 @@ provider "aws" {
 }
 
 output "AWS_REGION" {
-    value = var.AWS_REGION
+    value = var.aws_region
 }
