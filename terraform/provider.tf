@@ -9,7 +9,7 @@ terraform {
 
   backend "s3" {
     bucket = "program-assessment"
-    region = "us-east-2"
+    region = var.aws_region
     key = "terraform/terraform.tfstate"
   }
   required_version = "~> 1.0"
