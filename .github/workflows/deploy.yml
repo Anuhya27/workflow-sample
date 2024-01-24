@@ -22,7 +22,7 @@ jobs:
             - name: Check out code
               uses: actions/checkout@v2
               with:
-                path: ../terraform
+                path: ./terraform
 
             - name: Setup Terraform
               uses: hashicorp/setup-terraform@v2
