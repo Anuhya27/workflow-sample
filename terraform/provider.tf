@@ -15,11 +15,6 @@ terraform {
   required_version = "~> 1.0"
 }
 
-variable "aws_region" {
-  description = "AWS region to deploy resources"
-#   default     = "us-east-1"  # Set a default region or leave it empty
-}
-
 provider "aws" {
     region = var.aws_region
   # Other provider configuration options, if needed
