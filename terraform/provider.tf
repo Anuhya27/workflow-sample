@@ -21,7 +21,7 @@ variable "AWS_REGION" {
 }
 
 provider "aws" {
-    var.AWS_REGION
+    region = var.AWS_REGION
   # Other provider configuration options, if needed
 }
 
