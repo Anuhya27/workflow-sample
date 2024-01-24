@@ -4,12 +4,12 @@ on:
     push:
       branches:
         - uat
-        - main
+        - test
     pull_request:
       branches:
         - prod
         - uat
-        - main
+        - test
       types:
         - closed
 
