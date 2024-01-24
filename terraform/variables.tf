@@ -12,11 +12,6 @@ variable "iam_role_name" {
   default = "program_assessment"
 }
 
-data "aws_ecr_image" "program_assessment" {
-  repository_name = "test_ecr"
-  most_recent       = true
-}
-
 ##### IAM POLICIES #####
 variable "program_assessment_role_policies" {
   default = ["arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy", "arn:aws:iam::aws:policy/service-role/AWSBatchServiceRole"]
