@@ -40,7 +40,6 @@ resource "aws_batch_job_definition" "program_assessment" {
         type  = "MEMORY",
         value = "2048",
       },
-
     ],
     runtimePlatform      = {
       operatingSystemFamily = "LINUX",
