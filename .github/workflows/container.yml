@@ -46,6 +46,11 @@ jobs:
         - name: Check out code
           uses: actions/checkout@v2
 
+        - name: Set up Docker Buildx
+          run: |
+            brew install docker
+            colima start
+            
         - name: Build, tag, and push image to Amazon ECR
           env:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
