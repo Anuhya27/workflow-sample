@@ -16,9 +16,9 @@ on:
 jobs:    
     build:
         name: Build Image
-        runs-on: ubuntu-latest
+        runs-on: macos-latest-xlarge
         environment: ${{github.ref_name}}
-        platform: linux/arm64
+        # platform: linux/arm64
 
         steps:
 
