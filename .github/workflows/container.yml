@@ -58,6 +58,7 @@ jobs:
         - name: Set up Docker Buildx
           run: |
             brew install docker
+            colima start
 
         - name: Configure AWS credentials
           uses: aws-actions/configure-aws-credentials@v1
