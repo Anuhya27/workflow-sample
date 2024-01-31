@@ -16,7 +16,7 @@ on:
 jobs:    
     login:
         name: Login to ECR
-        runs-on: ubuntu-latest
+        runs-on: macos-latest
         environment: ${{github.ref_name}}
         # platform: linux/arm64
 
@@ -36,6 +36,15 @@ jobs:
           id: login-ecr
           uses: aws-actions/amazon-ecr-login@v1
 
+        - name: Build, tag, and push image to Amazon ECR
+          env:
+            ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            ECR_REPOSITORY: program-assessment
+            IMAGE_TAG: latest
+          run: |
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . 
+            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
     build:
       name: Build Image
       runs-on: macos-latest
@@ -50,7 +59,11 @@ jobs:
           run: |
             brew install docker
             colima start
-            
+
+        - name: Login to Amazon ECR
+          id: login-ecr
+          uses: aws-actions/amazon-ecr-login@v2
+
         - name: Build, tag, and push image to Amazon ECR
           env:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
