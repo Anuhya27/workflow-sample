@@ -43,6 +43,9 @@ jobs:
 
       steps:
 
+        - name: Check out code
+          uses: actions/checkout@v2
+
         - name: Build, tag, and push image to Amazon ECR
           env:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
