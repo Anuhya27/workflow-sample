@@ -16,7 +16,7 @@ on:
 jobs:    
     build:
         name: Build Image
-        runs-on: macos-latest-xlarge
+        runs-on: macos-latest
         environment: ${{github.ref_name}}
         # platform: linux/arm64
 
