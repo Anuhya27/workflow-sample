@@ -2,7 +2,7 @@ echo "test"
 
 
 #!/bin/bash
-# terraform init
+terraform init
 # Capture output from TF
 # cd terraform_code
 # echo $(terraform output ECS_TASK_EXECUTION_ROLE)
