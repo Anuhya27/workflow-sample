@@ -2,11 +2,11 @@ echo "test"
 
 
 #!/bin/bash
-terraform init
+# terraform init
 # Capture output from TF
 # cd terraform_code
 # echo $(terraform output ECS_TASK_EXECUTION_ROLE)
-echo "EXECUTION_ROLE_ARN=$(terraform output ECS_TASK_EXECUTION_ROLE)" >> $GITHUB_ENV
+EXECUTION_ROLE_ARN=$(terraform output ECS_TASK_EXECUTION_ROLE)
 # ... (other Terraform output variables)
 
 # Configure AWS Credentials
@@ -15,16 +15,19 @@ echo "EXECUTION_ROLE_ARN=$(terraform output ECS_TASK_EXECUTION_ROLE)" >> $GITHUB
 # aws configure set region $AWS_DEFAULT_REGION
 
 # Capture ECR Repo and Image details
-aws_batch_job_name=$(terraform output AWS_BATCH_JOB_NAME | tr -d '"')
-ecr_repo_name=$(terraform output ECR_REPO_NAME | tr -d '"')
-echo "JOB_NAME=${aws_batch_job_name}" >> $GITHUB_ENV
-echo "ECR_REPO_NAME=${ecr_repo_name}" >> $GITHUB_ENV
+
+JOB_NAME=$(terraform output AWS_BATCH_JOB_NAME | tr -d '"')
+echo $JOB_NAME
+ECR_REPO_NAME=$(terraform output ECR_REPO_NAME | tr -d '"')
+# echo "JOB_NAME=${aws_batch_job_name}" >> $GITHUB_ENV
+# echo "ECR_REPO_NAME=${ecr_repo_name}" >> $GITHUB_ENV
 # aws_batch_JD_vcpu_processed=$(terraform output aws_batch_JD_vcpu | tr -d '"')
 # echo "AWS_BATCH_JD_VCPU=${aws_batch_JD_vcpu_processed}" >> $GITHUB_ENV
 # aws_batch_JD_memory_processed=$(terraform output aws_batch_JD_memory | tr -d '"')
 # echo "AWS_BATCH_JD_MEMORY=${aws_batch_JD_memory_processed}" >> $GITHUB_ENV
 
 # Get current JobDefinition revision
+
 # REVISION=$(aws batch describe-job-definitions \
 #   --job-definition-name $JOB_NAME  \
 #   --status ACTIVE \
