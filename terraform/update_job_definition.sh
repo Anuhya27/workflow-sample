@@ -25,12 +25,25 @@ echo "ECR_REPO_NAME=${ecr_repo_name}" >> $GITHUB_ENV
 # echo "AWS_BATCH_JD_MEMORY=${aws_batch_JD_memory_processed}" >> $GITHUB_ENV
 
 # Get current JobDefinition revision
-REVISION=$(aws batch describe-job-definitions \
-  --job-definition-name $JOB_NAME  \
-  --status ACTIVE \
-  --query "jobDefinitions[0].revision")
+# REVISION=$(aws batch describe-job-definitions \
+#   --job-definition-name $JOB_NAME  \
+#   --status ACTIVE \
+#   --query "jobDefinitions[0].revision")
 
-echo "revision=$REVISION" >> $GITHUB_ENV
+# echo "revision=$REVISION" >> $GITHUB_ENV
+# Get the current revision of the Job Definition
+REVISION=$(aws batch describe-job-definitions \
+  --job-definition-name $JOB_NAME \
+  --status ACTIVE \
+  --query "jobDefinitions[0].revision" \
+  --output text)
+
+if [ -z "$REVISION" ]; then
+  echo "Failed to retrieve the current revision of the job definition."
+  exit 1
+fi
+
+echo "Current revision: $REVISION"
 
 # Register new JobDefinition
 NEW_REVISION=$(aws batch register-job-definition \
@@ -62,8 +75,8 @@ NEW_REVISION=$(aws batch register-job-definition \
 echo "new_revision=$NEW_REVISION" >> $GITHUB_ENV     
 
 # Delete Previous Job Definition
-OLD_JOB_DEFINITION=arn:aws:batch:$AWS_DEFAULT_REGION:825865577047:job-definition/$JOB_NAME:$REVISION
+OLD_JOB_DEFINITION=arn:aws:batch:$AWS_DEFAULT_REGION:050223225208:job-definition/$JOB_NAME:$REVISION
 aws batch deregister-job-definition --job-definition $OLD_JOB_DEFINITION
 
-PREVIOUS_TO_PREVIOUS_JOB_DEFINITION=arn:aws:batch:$AWS_DEFAULT_REGION:825865577047:job-definition/$JOB_NAME:$((REVISION-1))
+PREVIOUS_TO_PREVIOUS_JOB_DEFINITION=arn:aws:batch:$AWS_DEFAULT_REGION:050223225208:job-definition/$JOB_NAME:$((REVISION-1))
 aws batch deregister-job-definition --job-definition $PREVIOUS_TO_PREVIOUS_JOB_DEFINITION
