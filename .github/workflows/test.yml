@@ -37,7 +37,6 @@ jobs:
 
         - name: Terraform Init
           run: |
-            cd terraform_code
             terraform init -backend-config="region=${AWS_REGION}"
 
         - name: Terraform Plan
