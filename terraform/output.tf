@@ -38,16 +38,16 @@ output "ECR_REPO_NAME" {
 
 
 
-output "Batch_Job_Queue_ARN" {
-  value = aws_batch_job_queue.batch_queue.arn
-}
+# output "Batch_Job_Queue_ARN" {
+#   value = aws_batch_job_queue.batch_queue.arn
+# }
 
 
-output "Scheduler_Batch_Role_ARN" {
-  value = aws_iam_role.scheduler-batch-role.arn
-}
+# output "Scheduler_Batch_Role_ARN" {
+#   value = aws_iam_role.scheduler-batch-role.arn
+# }
 
 
-output "Scheduler_Batch_target_id" {
-  value = aws_scheduler_schedule.cron.id
-}
+# output "Scheduler_Batch_target_id" {
+#   value = aws_scheduler_schedule.cron.id
+# }
