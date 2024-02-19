@@ -56,10 +56,6 @@ jobs:
       needs: terraform
       environment: ${{github.ref_name}}
 
-      defaults:
-        run:
-          shell: bash
-          working-directory: ./terraform
       steps:
 
         - name: Checkout

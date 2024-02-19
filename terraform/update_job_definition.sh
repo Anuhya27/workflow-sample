@@ -4,8 +4,8 @@ echo "test"
 #!/bin/bash
 
 # Capture output from TF
-cd terraform_code
-echo $(terraform output ECS_TASK_EXECUTION_ROLE)
+# cd terraform_code
+# echo $(terraform output ECS_TASK_EXECUTION_ROLE)
 echo "EXECUTION_ROLE_ARN=$(terraform output ECS_TASK_EXECUTION_ROLE)" >> $GITHUB_ENV
 # ... (other Terraform output variables)
 
