@@ -44,12 +44,10 @@ jobs:
 
         - name: Terraform Plan
           run: |
-            cd terraform_code
             terraform plan -input=false
 
         - name: Terraform Apply
           run: |
-            cd terraform_code
             terraform apply -auto-approve -input=false
 
     ecr_image_update:
