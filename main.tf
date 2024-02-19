@@ -1,26 +1,26 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.0"
-    }
-  }
+# terraform {
+#   required_providers {
+#     aws = {
+#       source  = "hashicorp/aws"
+#       version = "~> 4.0"
+#     }
+#   }
 
-  required_version = "~> 1.0"
-}
+#   required_version = "~> 1.0"
+# }
 
-provider "aws" {
-  region = "us-east-2"
-}
+# provider "aws" {
+#   region = "us-east-2"
+# }
 
-# single ecr
-module "ecr" {
-  source = "./terraform"
+# # single ecr
+# module "ecr" {
+#   source = "./terraform"
 
-  name                  = "nginx"
-  project_family        = "demoecr"
+#   name                  = "nginx"
+#   project_family        = "demoecr"
   
-}
+# }
 
 # resource "aws_iam_role" "sagemaker_model" {
 
