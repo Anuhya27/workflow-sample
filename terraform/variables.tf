@@ -34,6 +34,19 @@ variable "program_assessment_role_policies" {
   default = ["arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy", "arn:aws:iam::aws:policy/service-role/AWSBatchServiceRole"]
 }
 
+variable aws_batch_JD_vcpu {
+  default = "0.25"
+  type        = string
+  description = "VCPU for AWS Batch Job Description"
+}
+
+
+
+variable aws_batch_JD_memory {
+  default = "512"
+  type        = string
+  description = "Memory for AWS Batch Job Description"
+}
 ##### SUBNETS #####
 # variable "subnets" {
 #   default = ["subnet-6744512f"]

@@ -65,13 +65,14 @@ resource "aws_batch_job_definition" "program_assessment" {
 
     resourceRequirements = [
       {
-        type  = "VCPU",
-        value = "8",
+        type  = "VCPU"
+        value = var.aws_batch_JD_vcpu
       },
       {
-        type  = "MEMORY",
-        value = "16384",
-      },
+        type  = "MEMORY"
+        value = var.aws_batch_JD_memory
+      }
     ],
+    
   })
 }
