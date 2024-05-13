@@ -45,7 +45,7 @@ jobs:
         #     terraform plan -input=false
 
         - name: Terraform Plan
-          run: echo ${{ env.JOB_DEFINITION }}
+          run: printenv
     #     - name: Terraform Apply
     #       run: |
     #         terraform apply -auto-approve -input=false
