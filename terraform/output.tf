@@ -13,11 +13,11 @@ output "ECS_TASK_EXECUTION_ROLE" {
 }
 
 output "AWS_BATCH_JOB_NAME" {
-  value = var.compute_env_name
+  value = var.JOB_DEFINITION
 }
 
 output "ECR_REPO_NAME" {
-  value = var.ecr_image_name
+  value = var.JOB_DEFINITION
 }
 
 output "aws_batch_JD_vcpu" {
