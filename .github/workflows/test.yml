@@ -75,7 +75,7 @@ jobs:
           with:
             aws-access-key-id: $AWS_ACCESS_KEY_ID
             aws-secret-access-key: $AWS_SECRET_ACCESS_KEY
-            aws-region:  ${{secrets.AWS_REGION}}
+            aws-region:  $AWS_REGION
   
         - name: Set up environment
           run: echo "ECR_IMAGE_TAG=$(cat env | grep ECR_IMAGE_TAG | cut -d'=' -f2)" >> $GITHUB_ENV
