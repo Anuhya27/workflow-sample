@@ -6,22 +6,23 @@ on:
       - main
       - test
 
+# environment: ${{ github.ref_name }}
+env:
+  AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+  AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+  AWS_REGION: ${{secrets.AWS_REGION}}
+  RESOURCE_NAME: ${{vars.JOB_DEFINITION}}
 jobs:
     terraform:
       name: "Terraform"
       runs-on: ubuntu-latest
-      environment: ${{ github.ref_name }}
 
       defaults:
         run:
           shell: bash
           working-directory: ./terraform
     
-      env:
-        AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
-        AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-        AWS_REGION: ${{secrets.AWS_REGION}}
-        RESOURCE_NAME: ${{vars.JOB_DEFINITION}}
+
       steps:
         - name: Checkout
           uses: actions/checkout@v3
@@ -72,7 +73,7 @@ jobs:
           with:
             aws-access-key-id: $AWS_ACCESS_KEY_ID
             aws-secret-access-key: $AWS_SECRET_ACCESS_KEY
-            aws-region: $AWS_REGION
+            aws-region:  ${{secrets.AWS_REGION}}
   
         - name: Set up environment
           run: echo "ECR_IMAGE_TAG=$(cat env | grep ECR_IMAGE_TAG | cut -d'=' -f2)" >> $GITHUB_ENV
