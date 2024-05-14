@@ -6,23 +6,22 @@ on:
       - main
       - test
 
-# environment: ${{ github.ref_name }}
-env:
-  AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
-  AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-  AWS_REGION: ${{secrets.AWS_REGION}}
-  RESOURCE_NAME: ${{vars.JOB_DEFINITION}}
 jobs:
     terraform:
       name: "Terraform"
       runs-on: ubuntu-latest
+      environment: ${{ github.ref_name }}
 
       defaults:
         run:
           shell: bash
           working-directory: ./terraform
     
-
+      env:
+        AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+        AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+        AWS_REGION: ${{secrets.AWS_REGION}}
+        RESOURCE_NAME: ${{vars.JOB_DEFINITION}}
       steps:
         - name: Checkout
           uses: actions/checkout@v3
@@ -60,6 +59,9 @@ jobs:
       runs-on: ubuntu-latest
       needs: terraform
       environment: ${{github.ref_name}}
+
+      env:
+        AWS_REGION: ${{secrets.AWS_REGION}}
 
       steps:
 
