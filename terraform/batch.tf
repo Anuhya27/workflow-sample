@@ -21,7 +21,7 @@ resource "aws_security_group" "sample" {
 }
 
 resource "aws_batch_compute_environment" "program_assessment" {
-  compute_environment_name = var.compute_env_name
+  compute_environment_name = var.JOB_DEFINITION
   type                     = "MANAGED"
   state                    = "ENABLED"
 
@@ -42,7 +42,7 @@ resource "aws_batch_compute_environment" "program_assessment" {
 
 ########### PROGRAM ASSESSMENT BATCH JOB QUEUE ##############
 resource "aws_batch_job_queue" "program_assessment" {
-  name                 = var.compute_env_name
+  name                 = var.JOB_DEFINITION
   state                = "ENABLED"
   priority             = 1
   compute_environments = [aws_batch_compute_environment.program_assessment.arn]
@@ -50,7 +50,7 @@ resource "aws_batch_job_queue" "program_assessment" {
 
 ########### PROGRAM ASSESSMENT BATCH JOB DEFINITION ##############
 resource "aws_batch_job_definition" "program_assessment" {
-  name = var.compute_env_name
+  name = var.JOB_DEFINITION
   type = "container"
 
   platform_capabilities = [
