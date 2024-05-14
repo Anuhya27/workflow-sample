@@ -27,7 +27,12 @@ output "aws_batch_JD_vcpu" {
 output "aws_batch_JD_memory" {
   value = var.aws_batch_JD_memory
 }
-
+variable JOB_DEFINITION{
+  description = "job definition name"
+}
+output "JOB_DEFINITION" {
+  value = var.JOB_DEFINITION
+}
 
 # output "EventBridge_Rule_Name" {
 #   value = var.eventbridge_rule_name

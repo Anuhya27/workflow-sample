@@ -33,13 +33,17 @@ jobs:
             echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
             sudo apt update && sudo apt install terraform
         
-        # - name: Set AWS Region
-        #   run: echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
+        - name: Set AWS Region
+          run: echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
   
-        # - name: Terraform Init
-        #   run: |
-        #     terraform init 
-
+        - name: Terraform Init
+          env:
+            JOB_DEFINITION: ${{vars.JOB_DEFINITION}}
+          run: |
+            terraform init 
+            terraform plan -input=false
+            terraform apply -auto-approve
+            
         # - name: Terraform Plan
         #   run: |
         #     terraform plan -input=false
