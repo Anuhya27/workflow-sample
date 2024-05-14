@@ -41,9 +41,9 @@ jobs:
             JOB_DEFINITION: ${{vars.JOB_DEFINITION}}
           run: |
             terraform init 
-            terraform plan -input=false
-            terraform apply -auto-approve
-            
+            terraform plan -input=false -var="JOB_DEFINITION=${{vars.JOB_DEFINITION}}"
+            terraform apply -auto-approve -var="JOB_DEFINITION=${{vars.JOB_DEFINITION}}"
+
         # - name: Terraform Plan
         #   run: |
         #     terraform plan -input=false
