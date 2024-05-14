@@ -21,7 +21,7 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
         AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
         AWS_REGION: ${{secrets.AWS_REGION}}
-
+        RESOURCE_NAME: ${{vars.JOB_DEFINITION}}
       steps:
         - name: Checkout
           uses: actions/checkout@v3
@@ -38,7 +38,7 @@ jobs:
   
         - name: Terraform Init
           env:
-            JOB_DEFINITION: ${{vars.JOB_DEFINITION}}
+            JOB_DEFINITION: 
           run: |
             terraform init 
             terraform plan -input=false -var="JOB_DEFINITION=${{vars.JOB_DEFINITION}}"
@@ -49,7 +49,7 @@ jobs:
         #     terraform plan -input=false
 
         - name: Terraform Plan
-          run: echo  "${{vars.JOB_DEFINITION}}"
+          run: echo $RESOURCE_NAME
     #     - name: Terraform Apply
     #       run: |
     #         terraform apply -auto-approve -input=false
@@ -68,8 +68,8 @@ jobs:
         - name: Configure AWS credentials
           uses: aws-actions/configure-aws-credentials@v1
           with:
-            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} 
-            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-access-key-id: $RESOURCE_NAME
+            aws-secret-access-key: $RESOURCE_NAME
             aws-region: "us-east-2"
   
         - name: Set up environment
@@ -82,10 +82,10 @@ jobs:
         - name: Push-ECR
           env:
             REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-            REPOSITORY: ${{vars.JOB_DEFINITION}}
+            REPOSITORY: $RESOURCE_NAME
             IMAGE_TAG: ${{ env.ECR_IMAGE_TAG }}
           run: |
-            docker build --build-arg JOB_DEFINITION=${{vars.JOB_DEFINITION}} -t $REGISTRY/$REPOSITORY:$IMAGE_TAG . 
+            docker build --build-arg JOB_DEFINITION=$RESOURCE_NAME -t $REGISTRY/$REPOSITORY:$IMAGE_TAG . 
             docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
             echo "image=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV
 
