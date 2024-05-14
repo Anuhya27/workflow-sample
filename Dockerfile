@@ -1,7 +1,8 @@
 ARG JOB_DEFINITION
 # ARG AWS_ACCOUNT_ID
-
 FROM --platform=linux/arm64 python:3.10 as build
+RUN echo "JOB_DEFINITION: $JOB_DEFINITION"
+
 # FROM python:3.10
 COPY batch_app.py .
 CMD ["python", "batch_app.py", "--user_input", "$JOB_DEFINITION"]
