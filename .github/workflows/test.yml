@@ -62,7 +62,8 @@ jobs:
 
       env:
         AWS_REGION: ${{secrets.AWS_REGION}}
-
+        AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+        AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
       steps:
 
         - name: Checkout
@@ -77,8 +78,8 @@ jobs:
             aws-secret-access-key: $AWS_SECRET_ACCESS_KEY
             aws-region:  $AWS_REGION
   
-        - name: Set up environment
-          run: echo "ECR_IMAGE_TAG=$(cat env | grep ECR_IMAGE_TAG | cut -d'=' -f2)" >> $GITHUB_ENV
+        # - name: Set up environment
+        #   run: echo "ECR_IMAGE_TAG=$(cat env | grep ECR_IMAGE_TAG | cut -d'=' -f2)" >> $GITHUB_ENV
 
         - name: Login to Amazon ECR
           id: login-ecr
