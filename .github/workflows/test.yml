@@ -23,16 +23,7 @@ jobs:
         AWS_REGION: ${{secrets.AWS_REGION}}
         RESOURCE_NAME: ${{vars.JOB_DEFINITION}}
         # BACKEND_BUCKET: ${{ matrix.branch == 'tes' ? 'staging' : 'production' }}  # Set env based on matrix branch
-        TF_ENV: ${{ steps.branch_name.outputs.environment }}  # Get environment from step output
-      run: |
-        if [[ ${{ github.ref }} == refs/heads/test ]]; then
-          echo "##@set-output name=Bucket_name value=program-assessment"
-        elif [[ ${{ github.ref }} == refs/heads/master ]]; then
-          echo "##@set-output name=Bucket_name value=production"
-        else
-          echo "Unsupported branch. Exiting..."
-          exit 1
-        fi
+
       steps:
         - name: Checkout
           uses: actions/checkout@v2
