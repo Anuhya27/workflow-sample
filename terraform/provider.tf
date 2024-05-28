@@ -18,9 +18,9 @@ terraform {
 provider "aws" {
   region = "us-east-2"
 }
-variable "BUCKET_NAME" {
-  # default = "program-assessment"
-}
+# variable "BUCKET_NAME" {
+#   # default = "program-assessment"
+# }
 # output "AWS_REGION" {
 #   value = var.aws_region
 # }
