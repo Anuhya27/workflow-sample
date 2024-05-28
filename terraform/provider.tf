@@ -8,7 +8,7 @@ terraform {
   }
 
   backend "s3" {
-    # bucket = "program-assessment"
+    bucket = var.BUCKET_NAME
     key    = "terraform/terraform.tfstate"
     region = "us-east-2"
   }
@@ -17,6 +17,9 @@ terraform {
 
 provider "aws" {
   region = "us-east-2"
+}
+variable "BUCKET_NAME" {
+  # default = "program-assessment"
 }
 
 # output "AWS_REGION" {
