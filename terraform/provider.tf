@@ -8,7 +8,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "program-assessment"
+    # bucket = "program-assessment"
     key    = "terraform/terraform.tfstate"
     region = "us-east-2"
   }
