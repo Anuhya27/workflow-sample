@@ -40,7 +40,7 @@ jobs:
           env:
             JOB_DEFINITION: 
           run: |
-            terraform init -var="BUCKET_NAME=program-assessment"
+            terraform init -backend-config="bucket=program-assessment"
             terraform plan -input=false -var="JOB_DEFINITION=${{vars.JOB_DEFINITION}}"
             terraform apply -auto-approve -var="JOB_DEFINITION=${{vars.JOB_DEFINITION}}"
 
