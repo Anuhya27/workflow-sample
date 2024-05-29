@@ -50,7 +50,7 @@ jobs:
  
         - name: Terraform Init
           run: |
-            terraform init -backend-config="bucket=${{env.Bucket_name}}" -var="JOB_DEFINITION=${{vars.JOB_DEFINITION}} -var="Environment=${{env.Environment}}" 
+            terraform init -backend-config="bucket=${{env.Bucket_name}}" -var="JOB_DEFINITION=${{vars.JOB_DEFINITION}}" -var="Environment=${{env.Environment}}" 
             terraform plan -input=false -var="JOB_DEFINITION=${{vars.JOB_DEFINITION}}" -var="Environment=${{env.Environment}}"
             terraform apply -auto-approve -var="JOB_DEFINITION=${{vars.JOB_DEFINITION}}" -var="Environment=${{env.Environment}}"
 
