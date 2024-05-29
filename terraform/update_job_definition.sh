@@ -1,6 +1,5 @@
 #!/bin/bash
 
-terraform init -reconfigure
 
 EXECUTION_ROLE_ARN=$(terraform output program_assessment_role_arn)
 JOB_NAME=$(terraform output AWS_BATCH_JOB_NAME | tr -d '"')
