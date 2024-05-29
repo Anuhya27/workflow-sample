@@ -44,10 +44,10 @@ jobs:
           run: |
             if [[ ${{ github.ref }} == refs/heads/test ]]; then
             echo "Bucket_name=program-assessment" >> $GITHUB_ENV
-            echo "TF_VAR_ENVIRONMENT=development" >> $GITHUB_ENV
+            echo "TF_VAR_Environment=development" >> $GITHUB_ENV
             elif [[ ${{ github.ref }} == refs/heads/master ]]; then
             echo "Bucket_name=program-assessment2" >> $GITHUB_ENV
-            echo "TF_VAR_ENVIRONMENT=production" >> $GITHUB_ENV
+            echo "TF_VAR_Environment=production" >> $GITHUB_ENV
             fi
  
         - name: Terraform Init
@@ -55,8 +55,8 @@ jobs:
             terraform init -backend-config="bucket=${{env.Bucket_name}}" 
             terraform plan
             terraform apply -auto-approve
-          env:
-            TF_VAR_ENVIRONMENT: ${{env.TF_VAR_ENVIRONMENT}}
+          # env:
+          #   TF_VAR_environment: ${{env.TF_VAR_ENVIRONMENT}}
 
         # - name: Terraform Plan
         #   run: |
