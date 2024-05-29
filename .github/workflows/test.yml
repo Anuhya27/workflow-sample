@@ -60,9 +60,9 @@ jobs:
 
         - name: Terraform Plan
           run: echo $RESOURCE_NAME
-    #     - name: Terraform Apply
-    #       run: |
-    #         terraform apply -auto-approve -input=false
+        - name: Terraform Apply
+          run: |
+            terraform apply -auto-approve -input=false
 
     ecr_image_update:
       name: "ECR Image Update"
