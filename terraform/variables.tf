@@ -56,3 +56,34 @@ variable aws_batch_JD_memory {
 # variable "security_groups" {
 #   default = ["sg-03e8b400d11651deb"]
 # }
+##### TAGS #####
+variable "Name" {
+  default = "test-assessment"
+}
+
+variable "Cost_Center_Name" {
+  default = "test"
+}
+
+variable "Department" {
+  default = "test"
+}
+
+variable "Team" {
+  default = "tes"
+}
+
+variable "SupportedBy" {
+  default = "testtt"
+}
+
+variable "Owner" {
+  default = "test@gmail.com"
+}
+
+variable "Environment" {
+}
+
+variable "ProductStream" {
+  default = "test"
+}

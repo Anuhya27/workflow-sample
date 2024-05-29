@@ -38,6 +38,16 @@ resource "aws_batch_compute_environment" "program_assessment" {
     ]
     
   }
+    tags = {
+    "Name" = var.Name
+    "Cost_Center_Name" = var.Cost_Center_Name
+    "Department" = var.Department
+    "epi:team" = var.Team
+    "epi:supported-by" = var.SupportedBy
+    "epi:owner" = var.Owner
+    "epi:environment" = var.Environment
+    "epi:product-stream" = var.ProductStream
+  }
 }
 
 ########### PROGRAM ASSESSMENT BATCH JOB QUEUE ##############
@@ -46,6 +56,16 @@ resource "aws_batch_job_queue" "program_assessment" {
   state                = "ENABLED"
   priority             = 1
   compute_environments = [aws_batch_compute_environment.program_assessment.arn]
+    tags = {
+    "Name" = var.Name
+    "Cost_Center_Name" = var.Cost_Center_Name
+    "Department" = var.Department
+    "epi:team" = var.Team
+    "epi:supported-by" = var.SupportedBy
+    "epi:owner" = var.Owner
+    "epi:environment" = var.Environment
+    "epi:product-stream" = var.ProductStream
+  }
 }
 
 ########### PROGRAM ASSESSMENT BATCH JOB DEFINITION ##############
@@ -75,4 +95,14 @@ resource "aws_batch_job_definition" "program_assessment" {
     ],
     
   })
+    tags = {
+    "Name" = var.Name
+    "Cost_Center_Name" = var.Cost_Center_Name
+    "Department" = var.Department
+    "epi:team" = var.Team
+    "epi:supported-by" = var.SupportedBy
+    "epi:owner" = var.Owner
+    "epi:environment" = var.Environment
+    "epi:product-stream" = var.ProductStream
+  }
 }

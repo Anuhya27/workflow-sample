@@ -42,18 +42,17 @@ jobs:
           run: |
             if [[ ${{ github.ref }} == refs/heads/test ]]; then
             echo "Bucket_name=program-assessment" >> $GITHUB_ENV
+            echo "Environment=development" >> $GITHUB_ENV
             elif [[ ${{ github.ref }} == refs/heads/master ]]; then
             echo "Bucket_name=program-assessment2" >> $GITHUB_ENV
-            else
-              echo "Unsupported branch. Exiting..."
-              exit 1
+            echo "Environment=production" >> $GITHUB_ENV
             fi
  
         - name: Terraform Init
           run: |
             terraform init -backend-config="bucket=${{env.Bucket_name}}"
-            terraform plan -input=false -var="JOB_DEFINITION=${{vars.JOB_DEFINITION}}"
-            terraform apply -auto-approve -var="JOB_DEFINITION=${{vars.JOB_DEFINITION}}"
+            terraform plan -input=false -var="JOB_DEFINITION=${{vars.JOB_DEFINITION}} -var="Environment"=${{env.Environment}}"
+            terraform apply -auto-approve -var="JOB_DEFINITION=${{vars.JOB_DEFINITION}} -var="Environment"=${{env.Environment}}"
 
         # - name: Terraform Plan
         #   run: |

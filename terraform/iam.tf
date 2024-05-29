@@ -12,7 +12,16 @@ resource "aws_iam_role" "program_assessment_role" {
       }
     }]
   })
-
+  tags = {
+    "Name" = var.Name
+    "Cost_Center_Name" = var.Cost_Center_Name
+    "Department" = var.Department
+    "epi:team" = var.Team
+    "epi:supported-by" = var.SupportedBy
+    "epi:owner" = var.Owner
+    "epi:environment" = var.Environment
+    "epi:product-stream" = var.ProductStream
+  }
 }
 
 ########### PROGRAM ASSESSMENT IAM POLICY ##############
