@@ -52,8 +52,8 @@ jobs:
         - name: Terraform Init
           run: |
             terraform init -backend-config="bucket=${{env.Bucket_name}}" 
-            terraform plan"
-            terraform apply -auto-approve"
+            terraform plan
+            terraform apply -auto-approve
 
         # - name: Terraform Plan
         #   run: |
