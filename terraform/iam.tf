@@ -80,6 +80,16 @@ resource "aws_iam_policy" "program_assessment_policy" {
       }
     ]
   })
+    tags = {
+    "Name" = var.Name
+    "Cost_Center_Name" = var.Cost_Center_Name
+    "Department" = var.Department
+    "epi:team" = var.Team
+    "epi:supported-by" = var.SupportedBy
+    "epi:owner" = var.Owner
+    "epi:environment" = var.Environment
+    "epi:product-stream" = var.ProductStream
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "program_assessment_policies" {
