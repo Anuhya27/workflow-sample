@@ -82,6 +82,8 @@ variable "Owner" {
 }
 
 variable "Environment" {
+  description = "Environment name"
+
 }
 
 variable "ProductStream" {
