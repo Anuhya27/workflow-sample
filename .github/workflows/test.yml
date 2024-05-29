@@ -22,6 +22,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
         AWS_REGION: ${{secrets.AWS_REGION}}
         RESOURCE_NAME: ${{vars.JOB_DEFINITION}}
+        TF_VAR_JOB_DEFINITION: ${{vars.JOB_DEFINITION}}
         # BACKEND_BUCKET: ${{ matrix.branch == 'tes' ? 'staging' : 'production' }}  # Set env based on matrix branch
 
       steps:
@@ -42,17 +43,17 @@ jobs:
           run: |
             if [[ ${{ github.ref }} == refs/heads/test ]]; then
             echo "Bucket_name=program-assessment" >> $GITHUB_ENV
-            echo "Environment=development" >> $GITHUB_ENV
+            echo "TF_VAR_ENVIRONMENT=development" >> $GITHUB_ENV
             elif [[ ${{ github.ref }} == refs/heads/master ]]; then
             echo "Bucket_name=program-assessment2" >> $GITHUB_ENV
-            echo "Environment=production" >> $GITHUB_ENV
+            echo "TF_VAR_ENVIRONMENT=production" >> $GITHUB_ENV
             fi
  
         - name: Terraform Init
           run: |
-            terraform init -backend-config="bucket=${{env.Bucket_name}}" -var="JOB_DEFINITION=${{vars.JOB_DEFINITION}}" -var="Environment=${{env.Environment}}" 
-            terraform plan -input=false -var="JOB_DEFINITION=${{vars.JOB_DEFINITION}}" -var="Environment=${{env.Environment}}"
-            terraform apply -auto-approve -var="JOB_DEFINITION=${{vars.JOB_DEFINITION}}" -var="Environment=${{env.Environment}}"
+            terraform init -backend-config="bucket=${{env.Bucket_name}}" 
+            terraform plan"
+            terraform apply -auto-approve"
 
         # - name: Terraform Plan
         #   run: |
