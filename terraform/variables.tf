@@ -81,12 +81,6 @@ variable "Owner" {
   default = "test@gmail.com"
 }
 
-variable "Environment" {
-  description = "Environment name"
-  default = "tets"
-
-}
-
 variable "ProductStream" {
   default = "test"
 }
