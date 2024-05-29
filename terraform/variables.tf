@@ -83,6 +83,7 @@ variable "Owner" {
 
 variable "Environment" {
   description = "Environment name"
+  default = "tets"
 
 }
 

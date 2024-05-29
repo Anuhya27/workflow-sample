@@ -29,6 +29,8 @@ output "aws_batch_JD_memory" {
 }
 variable JOB_DEFINITION{
   description = "job definition name"
+  default = "tets"
+
 }
 output "JOB_DEFINITION" {
   value = var.JOB_DEFINITION
