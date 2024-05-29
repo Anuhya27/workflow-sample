@@ -137,16 +137,17 @@ jobs:
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} 
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             aws-region: ${{ secrets.AWS_REGION }}
-        - name: Set AWS Region
-          run: |
-            if [[ ${{ github.ref }} == refs/heads/test ]]; then
-            echo "Bucket_name=program-assessment" >> $GITHUB_ENV
-            echo "TF_VAR_Environment=development" >> $GITHUB_ENV
-            elif [[ ${{ github.ref }} == refs/heads/master ]]; then
-            echo "Bucket_name=program-assessment2" >> $GITHUB_ENV
-            echo "TF_VAR_Environment=production" >> $GITHUB_ENV
-            fi
+        # - name: Set AWS Region
+        #   run: |
+        #     if [[ ${{ github.ref }} == refs/heads/test ]]; then
+        #     echo "Bucket_name=program-assessment" >> $GITHUB_ENV
+        #     echo "TF_VAR_Environment=development" >> $GITHUB_ENV
+        #     elif [[ ${{ github.ref }} == refs/heads/master ]]; then
+        #     echo "Bucket_name=program-assessment2" >> $GITHUB_ENV
+        #     echo "TF_VAR_Environment=production" >> $GITHUB_ENV
+        #     fi
         - name: Execute Job Definition Update Script
           run: |
+            terraform init -backend-config="bucket=${{env.Bucket_name}}"
             chmod +x update_job_definition.sh
             ./update_job_definition.sh
