@@ -8,19 +8,15 @@ terraform {
   }
 
   backend "s3" {
-    # bucket = "program-assessment"
-    key    = "terraform/terraform.tfstate"
-    region = "us-east-2"
+    key = "apps/program_assessment/terraform/terraform.tfstate"
   }
   required_version = "~> 1.0"
 }
 
 provider "aws" {
-  region = "us-east-2"
+  region = var.aws_region
 }
-# variable "BUCKET_NAME" {
-#   # default = "program-assessment"
-# }
-# output "AWS_REGION" {
-#   value = var.aws_region
-# }
+
+output "AWS_REGION" {
+  value = var.aws_region
+}
