@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - test
+      - prod
   pull_request:
     branches:
       - prod
