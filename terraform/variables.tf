@@ -42,14 +42,19 @@ variable "program_assessment_role_policies" {
   default = ["arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy", "arn:aws:iam::aws:policy/service-role/AWSBatchServiceRole"]
 }
 
+variable "iam_role_arn" {
+  default = "arn:aws:iam::050223225208:role/program_assessment_role"
+  
+}
+
 ##### SUBNETS #####
 variable "subnets" {
-  default = ["subnet-6744512f"]
+  default = ["subnet-07df0578c89cfbfb8"]
 }
 
 ##### SECURITY GROUPS #####
 variable "security_groups" {
-  default = ["sg-03e8b400d11651deb"]
+  default = ["sg-03b98a8f87a5fa633"]
 }
 
 ##### TAGS #####
@@ -91,4 +96,8 @@ output "Tag_environment" {
 
 output "Tag_name" {
   value = var.Name
+}
+
+output "iam_role_arn" {
+  value = var.iam_role_arn
 }

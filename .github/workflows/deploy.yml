@@ -35,13 +35,11 @@ jobs:
         - name: Set environment variables
           run: |
             if [[ ${{ github.ref }} == refs/heads/test ]]; then
-              echo "BUCKET_NAME=athena-pet" >> $GITHUB_ENV
-              echo "TF_VAR_Environment=development" >> $GITHUB_ENV
-              echo "TF_VAR_Name=program-assessment-uat" >> $GITHUB_ENV
+              echo "BUCKET_NAME=program-assessment" >> $GITHUB_ENV
+              echo "ENV_NAME=uat" >> $GITHUB_ENV
             elif [[ ${{ github.ref }} == refs/heads/prod ]]; then
               echo "BUCKET_NAME=petm" >> $GITHUB_ENV
-              echo "TF_VAR_Environment=production" >> $GITHUB_ENV
-              echo "TF_VAR_Name=program-assessment-prod" >> $GITHUB_ENV
+              echo "ENV_NAME=prod" >> $GITHUB_ENV
             fi
 
         - name: Install Terraform
@@ -57,11 +55,11 @@ jobs:
 
         - name: Terraform Plan
           run: |
-            terraform plan -input=false -var "aws_region=${{ env.AWS_REGION }}"
+            terraform plan -input=false -var-file=env_${{ env.ENV_NAME }}.tfvars
 
         - name: Terraform Apply
           run: |
-            terraform apply -auto-approve -var "aws_region=${{ env.AWS_REGION }}"
+            terraform apply -auto-approve -var-file=env_${{ env.ENV_NAME }}.tfvars
 
     ecr_image_update:
       name: ECR Image Update

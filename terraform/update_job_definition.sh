@@ -1,6 +1,6 @@
 #!/bin/bash
 
-EXECUTION_ROLE_ARN=$(terraform output program_assessment_role_arn)
+EXECUTION_ROLE_ARN=$(terraform output iam_role_arn | tr -d '"')
 JOB_NAME=$(terraform output AWS_BATCH_JOB_NAME | tr -d '"')
 ECR_REPO_NAME=$(terraform output ECR_REPO_NAME | tr -d '"')
 AWS_BATCH_JD_VCPU=$(terraform output aws_batch_JD_vcpu | tr -d '"')
@@ -33,13 +33,13 @@ NEW_REVISION=$(aws batch register-job-definition \
   --retry-strategy '{"attempts": 1,"evaluateOnExit": []}' \
   --container-properties "{\"image\" :\"$img\",
                     \"resourceRequirements\": [{\"value\": \"$AWS_BATCH_JD_VCPU\",\"type\": \"VCPU\"},{\"value\": \"$AWS_BATCH_JD_MEMORY\",\"type\": \"MEMORY\"}],
-                    \"jobRoleArn\" : $EXECUTION_ROLE_ARN,
-                    \"executionRoleArn\": $EXECUTION_ROLE_ARN,
+                    \"jobRoleArn\" : \"$EXECUTION_ROLE_ARN\",
+                    \"executionRoleArn\": \"$EXECUTION_ROLE_ARN\",
                     \"command\": [\"echo\",\"Starting Program assessment...\"],
                     \"fargatePlatformConfiguration\": {\"platformVersion\": \"LATEST\"},
                     \"runtimePlatform\": {\"operatingSystemFamily\": \"LINUX\",\"cpuArchitecture\": \"X86_64\"}}" \
   --platform-capabilities FARGATE \
-  --tags "{"epi:environment": $TAG_ENVIRONMENT,"epi:product_stream": "analyst","Department": "PET","epi:supported_by": "PET","epi:owner": "gowtham.veerappan@episource.com","epi:team": "PET","Cost_Center_Name": "EpiAnalyst_Ops_Tech_Licenses","Name": $TAG_NAME}" \
+  --tags "{\"epi:environment\": \"$TAG_ENVIRONMENT\",\"epi:product_stream\": \"analyst\",\"Department\": \"PET\",\"epi:supported_by\": \"PET\",\"epi:owner\": \"gowtham.veerappan@episource.com\",\"epi:team\": \"PET\",\"Cost_Center_Name\": \"EpiAnalyst_Ops_Tech_Licenses\",\"Name\": \"$TAG_NAME\"}" \
   --query "revision" )
 
 echo "Registered job definition: $NEW_REVISION with ECR image tag: $img"
@@ -49,7 +49,7 @@ new_revision=$NEW_REVISION
 # Delete Previous Job Definition
 OLD_JOB_DEFINITION=$AWS_BATCH_JD_ARN:$REVISION
 aws batch deregister-job-definition --job-definition $JOB_NAME:$REVISION
-
+echo revision $REVISION
 # Check if revision is greater than 1
 if (( REVISION - 1 > 0 )); then
 
