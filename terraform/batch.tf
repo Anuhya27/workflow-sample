@@ -1,34 +1,9 @@
-########### PROGRAM ASSESSMENT BATCH COMPUTE ENVIRONMENT ##############
-resource "aws_batch_compute_environment" "program_assessment" {
-  compute_environment_name = var.RESOURCE_NAME
-  type                     = "MANAGED"
-  state                    = "ENABLED"
-
-  compute_resources {
-    type               = "FARGATE"
-    max_vcpus          = 8
-    security_group_ids = var.security_groups
-    subnets            = var.subnets
-  }
-
-  tags = {
-    "Name"               = var.Name
-    "Cost_Center_Name"   = var.Cost_Center_Name
-    "Department"         = var.Department
-    "epi:team"           = var.Team
-    "epi:supported-by"   = var.SupportedBy
-    "epi:owner"          = var.Owner
-    "epi:environment"    = var.Environment
-    "epi:product-stream" = var.ProductStream
-  }
-}
-
 ########### PROGRAM ASSESSMENT BATCH JOB QUEUE ##############
 resource "aws_batch_job_queue" "program_assessment" {
   name                 = var.RESOURCE_NAME
   state                = "ENABLED"
   priority             = 1
-  compute_environments = [aws_batch_compute_environment.program_assessment.arn]
+  compute_environments = var.compute_environments_arn
   tags = {
     "Name"               = var.Name
     "Cost_Center_Name"   = var.Cost_Center_Name

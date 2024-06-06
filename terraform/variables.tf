@@ -101,3 +101,7 @@ output "Tag_name" {
 output "iam_role_arn" {
   value = var.iam_role_arn
 }
+
+variable "compute_environments_arn" {
+  description = "Common compute environemt arn"
+}
