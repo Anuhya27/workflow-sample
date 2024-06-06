@@ -56,11 +56,11 @@ jobs:
 
         - name: Terraform Plan
           run: |
-            terraform plan -input=false -var-file=${{ env.ENV_NAME }}.tfvars
+            terraform plan -input=false -var-file=./vars/vars-${{ env.ENV_NAME }}.tfvars
 
         - name: Terraform Apply
           run: |
-            terraform apply -auto-approve -var-file=${{ env.ENV_NAME }}.tfvars
+            terraform apply -auto-approve -var-file=./vars/vars-${{ env.ENV_NAME }}.tfvars
 
     ecr_image_update:
       name: ECR Image Update
