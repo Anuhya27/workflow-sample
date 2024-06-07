@@ -1,4 +1,10 @@
 #!/bin/bash
+for arg in "$@"; do
+    case "$arg" in
+        --account_id=*) account_id="${arg#*=}" ;;
+        --region=*) regoin="${arg#*=}" ;;
+    esac
+done
 
 EXECUTION_ROLE_ARN=$(terraform output iam_role_arn | tr -d '"')
 JOB_NAME=$(terraform output AWS_BATCH_JOB_NAME | tr -d '"')
@@ -24,8 +30,9 @@ if [ -z "$REVISION" ]; then
   exit 1
 fi
 
-img=$ECR_REPO_NAME:$ECR_IMAGE_TAG
+img=$account_id.dkr.ecr.$region.amazonaws.com/$ECR_REPO_NAME:$ECR_IMAGE_TAG
 
+echo $img
 NEW_REVISION=$(aws batch register-job-definition \
   --job-definition-name $JOB_NAME \
   --type container \
@@ -49,7 +56,7 @@ new_revision=$NEW_REVISION
 # Delete Previous Job Definition
 OLD_JOB_DEFINITION=$AWS_BATCH_JD_ARN:$REVISION
 aws batch deregister-job-definition --job-definition $JOB_NAME:$REVISION
-echo revision $REVISION
+
 # Check if revision is greater than 1
 if (( REVISION - 1 > 0 )); then
 
