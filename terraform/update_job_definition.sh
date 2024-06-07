@@ -30,7 +30,7 @@ if [ -z "$REVISION" ]; then
   exit 1
 fi
 
-img=$account_id + ".dkr.ecr." + $region.amazonaws.com/$ECR_REPO_NAME:$ECR_IMAGE_TAG"
+img="$account_id.dkr.ecr.$region.amazonaws.com/$ECR_REPO_NAME:$ECR_IMAGE_TAG"
 
 echo $img
 NEW_REVISION=$(aws batch register-job-definition \
