@@ -2,7 +2,7 @@
 for arg in "$@"; do
     case "$arg" in
         --account_id=*) account_id="${arg#*=}" ;;
-        --region=*) regoin="${arg#*=}" ;;
+        --region=*) region="${arg#*=}" ;;
     esac
 done
 
@@ -30,7 +30,7 @@ if [ -z "$REVISION" ]; then
   exit 1
 fi
 
-img=$account_id.dkr.ecr.$region.amazonaws.com/$ECR_REPO_NAME:$ECR_IMAGE_TAG
+img=$account_id + ".dkr.ecr." + $region.amazonaws.com/$ECR_REPO_NAME:$ECR_IMAGE_TAG"
 
 echo $img
 NEW_REVISION=$(aws batch register-job-definition \

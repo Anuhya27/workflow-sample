@@ -136,5 +136,5 @@ jobs:
         - name: Execute Job Definition Update Script
           run: |
             terraform init -backend-config="bucket=${{ env.BUCKET_NAME }}"
-            chmod +x update_job_definition.sh --region="${{ vars.AWS_REGION }}" --account_id="${{ secrets.ACCOUNT_ID }}"
-            ./update_job_definition.sh
+            chmod +x update_job_definition.sh 
+            ./update_job_definition.sh --region="${{ vars.AWS_REGION }}" --account_id="${{ secrets.ACCOUNT_ID }}"
