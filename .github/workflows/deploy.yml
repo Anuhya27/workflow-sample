@@ -24,7 +24,7 @@ jobs:
 
       - name: Build wheel
         run: |
-          python -m build
+          python setup.py bdist_wheel
 
       - name: Configure AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
@@ -35,4 +35,4 @@ jobs:
 
       - name: Upload wheel to S3
         run: |
-          aws s3 cp --recursive ./scripts s3://program-assessment/apps/
+          aws s3 cp --recursive ./dist s3://program-assessment/apps/
