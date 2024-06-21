@@ -2,7 +2,7 @@ name: Build and Upload Wheel
 
 on:
   push:
-    branches: [ main ]
+    branches: [ test ]
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
