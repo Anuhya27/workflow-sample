@@ -13,14 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9  # Update this if needed
-          
+      - name: Create virtual environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate  # Activate virtual environment
+
       - name: Install build tools
         run: |
-          python -m pip install --upgrade build bdist_wheel
+          pip install --upgrade setuptools wheel
 
       - name: Build wheel
         run: |
