@@ -13,6 +13,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./scripts
+
     steps:
       - uses: actions/checkout@v2
 
@@ -20,7 +25,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9  # Update this if needed
-
+          
       - name: Install build tools
         run: |
           python -m pip install --upgrade build
