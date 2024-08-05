@@ -43,10 +43,18 @@ jobs:
         id: build-image
         run: |
           source version_track.sh
-          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-          docker build --build-arg env=${{ env.Environment }} \
-                       -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$AWS_ECR_REPO:${VERSION} .
-          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$AWS_ECR_REPO:${VERSION}
+
+      - name: Push-ECR
+        env: 
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: $AWS_ECR_REPO
+          IMAGE_TAG: ${VERSION}
+        run: |
+          docker build --build-arg AWS_REGION=${{ vars.AWS_REGION }} \
+            --build-arg AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }} \
+            -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .  
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          echo "image=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV
 
       - name: Update lambda Job Definition
         id: modify_job_def
