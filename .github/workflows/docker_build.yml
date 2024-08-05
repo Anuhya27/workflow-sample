@@ -64,18 +64,18 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
           
-      # - name: Push-ECR
-      #   env:
-      #     REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      #     REPOSITORY: ${{ env.AWS_ECR_REPO }}
-      #     IMAGE_TAG: ${{ env.ECR_IMAGE_TAG }}
-      #   run: |
-      #       source version_track.sh
-      #       docker build --build-arg AWS_REGION=${{ vars.AWS_REGION }} \
-      #         --build-arg AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }} \
-      #         -t $REGISTRY/$REPOSITORY:$VERSION .  
-      #       docker push $REGISTRY/$REPOSITORY:$VERSION
-      # #       echo "image=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV
+      - name: Push-ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ${{ env.AWS_ECR_REPO }}
+          IMAGE_TAG: ${{ env.ECR_IMAGE_TAG }}
+        run: |
+            source version_track.sh
+            docker build --build-arg AWS_REGION=${{ vars.AWS_REGION }} \
+              --build-arg AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }} \
+              -t $REGISTRY/$REPOSITORY:$VERSION .  
+            docker push $REGISTRY/$REPOSITORY:$VERSION
+      #       echo "image=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV
 
       - name: Update lambda Job Definition
         id: modify_job_def
