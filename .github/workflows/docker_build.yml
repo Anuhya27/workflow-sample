@@ -1,0 +1,59 @@
+name: Building Docker Image
+on:
+  pull_request:
+    types:
+      - closed
+    branches: ["test"]
+    paths:
+      - "requirements.txt"
+
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name }}
+    env:
+      AWS_REGION: us-east-1
+      AWS_ECR_REPO: dummy_ecr
+      AWS_ACCOUNT_ID : 050223225208
+      lambda_func : ECR_synk
+      slack_webhook: ${{secrets.SLACK_WEBHOOK_URL}}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.SECRET_KEY }}
+          aws-region: us-east-1
+
+
+      - name: Set environment variables
+        run: |
+          if [[ ${{ github.ref }} == refs/heads/test ]]; then
+            echo "Environment=uat" >> $GITHUB_ENV
+          elif [[ ${{ github.ref }} == refs/heads/master ]]; then
+            echo "Environment=prod" >> $GITHUB_ENV
+          fi
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        run: |
+          source version_track.sh
+          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+          docker build --build-arg env=${{ env.Environment }} \
+                       -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$AWS_ECR_REPO:${VERSION} .
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$AWS_ECR_REPO:${VERSION}
+
+      - name: Update lambda Job Definition
+        id: modify_job_def
+        run : |
+          source version_track.sh
+          aws lambda update-function-code --function-name $lambda_func --image-uri $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$AWS_ECR_REPO:${VERSION}
