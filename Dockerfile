@@ -1,5 +1,12 @@
 FROM public.ecr.aws/lambda/python:3.12
 
+# Installing dependencies
+RUN apk update && apk upgrade; \
+    rm -rf /var/cache/apk/*; \
+    pip install --upgrade pip --no-cache-dir ;
+
+RUN apk --no-cache add gcc build-base
+
 ARG env
 
 # Copy function code
