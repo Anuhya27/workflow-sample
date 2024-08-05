@@ -39,12 +39,12 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build, tag, and push image to Amazon ECR
-        id: build-image
-        run: |
-          source version_track.sh
+      # - name: Build, tag, and push image to Amazon ECR
+      #   id: build-image
+      #   run: |
+      #     source version_track.sh
       - name: Set up environment
-        run: echo "ECR_IMAGE_TAG=$(cat env | grep ECR_IMAGE_TAG | cut -d'=' -f2)" >> $GITHUB_ENV
+        run: echo "ECR_IMAGE_TAG=$(cat .env | grep ECR_IMAGE_TAG | cut -d'=' -f2)" >> $GITHUB_ENV
 
       - name: Push-ECR
         env: 
@@ -56,6 +56,25 @@ jobs:
             -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .  
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
           echo "image=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV
+
+      # - name: Set up environment
+      #   run: echo "ECR_IMAGE_TAG=$(cat .env | grep ECR_IMAGE_TAG | cut -d'=' -f2)" >> $GITHUB_ENV
+
+      # - name: Login to Amazon ECR
+      #   id: login-ecr
+      #   uses: aws-actions/amazon-ecr-login@v2
+          
+      # - name: Push-ECR
+      #   env:
+      #     REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      #     REPOSITORY: ${{ vars.RESOURCE_NAME }}
+      #     IMAGE_TAG: ${{ env.ECR_IMAGE_TAG }}
+      #   run: |
+      #       docker build --build-arg AWS_REGION=${{ vars.AWS_REGION }} \
+      #         --build-arg AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }} \
+      #         -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .  
+      #       docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+      #       echo "image=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV
 
       - name: Update lambda Job Definition
         id: modify_job_def

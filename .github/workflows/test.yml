@@ -1,0 +1,129 @@
+name: Terraform and Job Definition Update
+
+on:
+  pull_request:
+    branches: [master, develop]
+    types: [closed]
+
+      
+jobs:
+    terraform:
+      name: Terraform
+      runs-on: ubuntu-latest
+      environment: ${{ github.ref_name }}
+
+      defaults:
+        run:
+          shell: bash
+          working-directory: ./terraform
+    
+      env:
+        AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+        AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+        AWS_REGION: ${{vars.AWS_REGION}}
+        TF_VAR_RESOURCE_NAME: ${{vars.RESOURCE_NAME}}
+
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+        
+        - name: Set environment variables
+          run: |
+            if [[ ${{ github.ref }} == refs/heads/develop ]]; then
+              echo "BUCKET_NAME=athena-pet" >> $GITHUB_ENV
+              echo "ENV_NAME=uat" >> $GITHUB_ENV
+            elif [[ ${{ github.ref }} == refs/heads/master ]]; then
+              echo "BUCKET_NAME=petm" >> $GITHUB_ENV
+              echo "ENV_NAME=prod" >> $GITHUB_ENV
+            fi
+
+        - name: Install Terraform
+          run: |
+            echo $environment
+            wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+            echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+            sudo apt update && sudo apt install terraform
+        
+        - name: Terraform Init
+          run: |
+            terraform init -backend-config="bucket=${{ env.BUCKET_NAME }}"
+
+        - name: Terraform Plan
+          run: |
+            terraform plan -input=false -var-file=./vars/vars-${{ env.ENV_NAME }}.tfvars
+
+        - name: Terraform Apply
+          run: |
+            terraform apply -auto-approve -var-file=./vars/vars-${{ env.ENV_NAME }}.tfvars
+
+    ecr_image_update:
+      name: ECR Image Update
+      runs-on: ubuntu-latest
+      needs: terraform
+      environment: ${{github.ref_name}}
+
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+ 
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region:  ${{ vars.AWS_REGION }}
+  
+        - name: Set up environment
+          run: echo "ECR_IMAGE_TAG=$(cat env | grep ECR_IMAGE_TAG | cut -d'=' -f2)" >> $GITHUB_ENV
+
+        - name: Login to Amazon ECR
+          id: login-ecr
+          uses: aws-actions/amazon-ecr-login@v2
+          
+        - name: Push-ECR
+          env:
+            REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            REPOSITORY: ${{ vars.RESOURCE_NAME }}
+            IMAGE_TAG: ${{ env.ECR_IMAGE_TAG }}
+          run: |
+            docker build --build-arg AWS_REGION=${{ vars.AWS_REGION }} \
+              --build-arg AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }} \
+              -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .  
+            docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+            echo "image=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV
+
+    job_definition_update:
+      name: Job Definition Update
+      runs-on: ubuntu-latest
+      needs: [terraform, ecr_image_update]
+      environment: ${{ github.ref_name }}
+
+      defaults:
+        run:
+          shell: bash
+          working-directory: ./terraform
+
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} 
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ vars.AWS_REGION }}
+          
+        - name: Set environment variables
+          run: |
+            if [[ ${{ github.ref }} == refs/heads/uat ]]; then
+              echo "BUCKET_NAME=athena-pet" >> $GITHUB_ENV
+            elif [[ ${{ github.ref }} == refs/heads/prod ]]; then
+              echo "BUCKET_NAME=petm" >> $GITHUB_ENV
+            fi
+  
+        - name: Execute Job Definition Update Script
+          run: |
+            terraform init -backend-config="bucket=${{ env.BUCKET_NAME }}"
+            chmod +x update_job_definition.sh
+            ./update_job_definition.sh --region="${{ vars.AWS_REGION }}" --account_id="${{ secrets.AWS_ACCOUNT_ID }}"
