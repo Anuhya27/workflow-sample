@@ -1,11 +1,7 @@
 name: Building Docker Image
 on:
-  pull_request:
-    types:
-      - closed
-    branches: ["test"]
-    paths:
-      - "requirements.txt"
+    push:
+      branches: [ test ]
 
 
 jobs:
