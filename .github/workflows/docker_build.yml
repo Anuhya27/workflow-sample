@@ -12,7 +12,7 @@ jobs:
       AWS_REGION: us-east-1
       AWS_ECR_REPO: dummy_ecr
       AWS_ACCOUNT_ID : 050223225208
-      lambda_func : ECR_synk
+      lambda_func : test_lambda
       slack_webhook: ${{secrets.SLACK_WEBHOOK_URL}}
 
     steps:
