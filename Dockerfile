@@ -1,12 +1,11 @@
-FROM public.ecr.aws/lambda/python:3.12
+FROM public.ecr.aws/docker/library/python:3.12
 
 # Installing dependencies
-RUN yum -y update && yum -y upgrade; \
-    yum clean all; \
+RUN apk update && apk upgrade; \
+    rm -rf /var/cache/apk/*; \
     pip install --upgrade pip --no-cache-dir ;
 
-# Install gcc and build-base using yum
-RUN yum -y install gcc gcc-c++ make
+RUN apk --no-cache add gcc build-base
 
 ARG env
 
