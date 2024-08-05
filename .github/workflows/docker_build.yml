@@ -48,7 +48,7 @@ jobs:
         env: 
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: $AWS_ECR_REPO
-          IMAGE_TAG: ${VERSION}
+          IMAGE_TAG: $VERSION
         run: |
           docker build --build-arg AWS_REGION=${{ vars.AWS_REGION }} \
             --build-arg AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }} \
