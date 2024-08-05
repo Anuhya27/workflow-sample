@@ -9,6 +9,12 @@ RUN apk --no-cache add gcc build-base
 
 ARG env
 
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the files to working directory in the container
+ADD . .
+
 # Copy function code
 COPY lambda_handler.py ${LAMBDA_TASK_ROOT}
 COPY requirements.txt ${LAMBDA_TASK_ROOT}
