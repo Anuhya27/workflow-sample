@@ -81,5 +81,11 @@ jobs:
         id: modify_job_def
         run : |
           source version_track.sh
-          aws lambda update-function-code --function-name ECR_synk --image-uri 050223225208.dkr.ecr.us-east-1.amazonaws.com/dummy_ecr:1.0.1v --region us-east-1
+          aws lambda update-function-code --function-name $lambda_func --image-uri $AWS_ACCOUNT_ID.dkr.ecr.us-west-2.amazonaws.com/$AWS_ECR_REPO:${VERSION}
 
+      # - name: Update lambda Job Definition
+      #   id: modify_job_def
+      #   run : |
+      #     source version_track.sh
+      #     aws lambda update-function-code --function-name $lambda_func --image-uri $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$AWS_ECR_REPO:${VERSION}
+  
