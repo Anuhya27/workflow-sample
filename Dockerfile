@@ -18,4 +18,4 @@ ADD . .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Run script.py when the container launches
-CMD ["echo", "Program Initiated..."]
+CMD [ "lambda_handler.lambda_handler" ]
