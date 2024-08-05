@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name }}
     env:
-      AWS_REGION: us-east-1
+      AWS_REGION: us-west-2
       AWS_ECR_REPO: dummy_ecr
       AWS_ACCOUNT_ID : 050223225208
       lambda_func : ECR_synk
