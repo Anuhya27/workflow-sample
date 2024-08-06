@@ -2,17 +2,17 @@
 FROM public.ecr.aws/lambda/python:3.12
 
 # # Installing dependencies
-# RUN apk update && apk upgrade; \
-#     rm -rf /var/cache/apk/*; \
-#     pip install --upgrade pip --no-cache-dir ;
+RUN apk update && apk upgrade; \
+    rm -rf /var/cache/apk/*; \
+    pip install --upgrade pip --no-cache-dir ;
 
-# RUN apk --no-cache add gcc build-base
+RUN apk --no-cache add gcc build-base
 
 # Install build dependencies
-RUN apt-get update \
-    && apt-get install -y gcc g++ make \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# RUN apt-get update \
+#     && apt-get install -y gcc g++ make \
+#     && apt-get clean \
+#     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt  ${LAMBDA_TASK_ROOT}
 # Copy the files to working directory in the container
