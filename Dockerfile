@@ -8,8 +8,8 @@ RUN apk update && apk upgrade; \
 
 RUN apk --no-cache add gcc build-base
 
+COPY requirements.txt  ${LAMBDA_TASK_ROOT}
 # Copy the files to working directory in the container
-ADD . .
 COPY lambda_handler.py ${LAMBDA_TASK_ROOT}
 
 # Install any needed packages specified in requirements.txt
