@@ -1,12 +1,12 @@
 # Base image
-FROM public.ecr.aws/docker/library/python:3.11-alpine
+FROM public.ecr.aws/lambda/python:3.12
 
-# Installing dependencies
-RUN apk update && apk upgrade; \
-    rm -rf /var/cache/apk/*; \
-    pip install --upgrade pip --no-cache-dir ;
+# # Installing dependencies
+# RUN apk update && apk upgrade; \
+#     rm -rf /var/cache/apk/*; \
+#     pip install --upgrade pip --no-cache-dir ;
 
-RUN apk --no-cache add gcc build-base
+# RUN apk --no-cache add gcc build-base
 
 COPY requirements.txt  ${LAMBDA_TASK_ROOT}
 # Copy the files to working directory in the container
