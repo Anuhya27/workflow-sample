@@ -17,6 +17,7 @@ FROM public.ecr.aws/lambda/python:3.12-x86_64
 COPY requirements.txt  ${LAMBDA_TASK_ROOT}
 # Copy the files to working directory in the container
 COPY lambda_handler.py ${LAMBDA_TASK_ROOT}
+COPY analysis-sheets-36029f131547.json ${LAMBDA_TASK_ROOT}
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt

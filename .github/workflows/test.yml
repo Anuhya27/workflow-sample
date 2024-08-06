@@ -1,9 +1,10 @@
 name: Terraform and Job Definition Update
 
 on:
-    push:
-      branches: [ test ]
-  
+    pull_request:
+      branches: [master, develop]
+      types: [closed]
+    
       
 jobs:
     terraform:

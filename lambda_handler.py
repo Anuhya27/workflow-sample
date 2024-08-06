@@ -6,7 +6,24 @@ from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
     
 def lambda_handler(event, context):
+    s3_bucket = 'ecr-sync'
+    s3_key = 'analysis-sheets-36029f131547.json'
 
+    # Initialize S3 client
+    s3_client = boto3.client('s3')
+
+    # Fetch the JSON file from S3
+    try:
+        response = s3_client.get_object(Bucket=s3_bucket, Key=s3_key)
+        json_data = response['Body'].read().decode('utf-8')
+        creds_json = json.loads(json_data)
+    except Exception as e:
+        print(f"Error fetching JSON file from S3: {e}")
+        return {
+            'statusCode': 500,
+            'body': json.dumps(f'Error fetching JSON file from S3: {e}')
+        }
+    
     # Set up credentials
     scopes = ['https://www.googleapis.com/auth/spreadsheets.readonly']
     creds = Credentials.from_service_account_file('analysis-sheets-36029f131547.json', scopes=scopes)
