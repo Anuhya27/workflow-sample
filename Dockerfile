@@ -1,5 +1,5 @@
 # Base image
-FROM public.ecr.aws/lambda/python:3.12
+FROM public.ecr.aws/lambda/python:3.12-arm64
 
 # # Installing dependencies
 # RUN apk update && apk upgrade; \
