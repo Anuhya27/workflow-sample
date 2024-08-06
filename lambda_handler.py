@@ -29,7 +29,7 @@ def lambda_handler(event, context):
     scopes = ['https://www.googleapis.com/auth/cloud-platform']
 
     # scopes = ['https://www.googleapis.com/auth/spreadsheets.readonly']
-    creds = Credentials.from_service_account_file(creds_json, scopes=scopes)
+    creds = Credentials.from_service_account_info(creds_json, scopes=scopes)
     
     # Build the service
     service = build('sheets', 'v4', credentials=creds)
