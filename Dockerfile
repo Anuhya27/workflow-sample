@@ -8,9 +8,6 @@ RUN apk update && apk upgrade; \
 
 RUN apk --no-cache add gcc build-base
 
-# Set the working directory in the container
-WORKDIR /app
-
 # Copy the files to working directory in the container
 ADD . .
 
