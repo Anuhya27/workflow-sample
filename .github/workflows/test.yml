@@ -19,7 +19,7 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
         AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-        AWS_REGION: us-east-2
+        AWS_REGION: us-west-2
 
       steps:
         - name: Checkout
@@ -71,7 +71,7 @@ jobs:
           with:
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws-region:  us-east-2
+            aws-region:  us-west-2
   
         - name: Set up environment
           run: echo "ECR_IMAGE_TAG=$(cat env | grep ECR_IMAGE_TAG | cut -d'=' -f2)" >> $GITHUB_ENV
@@ -112,7 +112,7 @@ jobs:
           with:
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} 
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws-region: us-east-2
+            aws-region: us-west-2
           
         - name: Set environment variables
           run: |
