@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name }}
     env:
-      AWS_REGION: us-east-1
+      AWS_REGION: us-west-2
       AWS_ECR_REPO: dummy_ecr
       AWS_ACCOUNT_ID : 050223225208
-      lambda_func : test_lambda
+      lambda_func : ecr_lambda
       slack_webhook: ${{secrets.SLACK_WEBHOOK_URL}}
 
     steps:
@@ -24,7 +24,7 @@ jobs:
         with:
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws-region: us-east-1
+            aws-region: us-west-2
    
 
       - name: Set environment variables
@@ -71,9 +71,7 @@ jobs:
           IMAGE_TAG: ${{ env.ECR_IMAGE_TAG }}
         run: |
             source version_track.sh
-            docker build --build-arg AWS_REGION=${{ vars.AWS_REGION }} \
-              --build-arg AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }} \
-              -t $REGISTRY/$REPOSITORY:$VERSION .  
+            docker build -t $REGISTRY/$REPOSITORY:$VERSION .  
             docker push $REGISTRY/$REPOSITORY:$VERSION
       #       echo "image=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV
 
