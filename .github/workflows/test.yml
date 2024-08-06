@@ -73,8 +73,15 @@ jobs:
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             aws-region:  us-west-2
   
-        - name: Set up environment
-          run: echo "ECR_IMAGE_TAG=$(cat env | grep ECR_IMAGE_TAG | cut -d'=' -f2)" >> $GITHUB_ENV
+       
+        - name: Set environment variables
+          run: |
+            if [[ ${{ github.ref }} == refs/heads/test ]]; then
+              echo "TF_VAR_RESOURCE_NAME=member_profile_uat" >> $GITHUB_ENV
+            elif [[ ${{ github.ref }} == refs/heads/master ]]; then
+              echo "TF_VAR_RESOURCE_NAME=member_profile_prod" >> $GITHUB_ENV
+            fi
+            echo "ECR_IMAGE_TAG=$(cat env | grep ECR_IMAGE_TAG | cut -d'=' -f2)" >> $GITHUB_ENV
 
         - name: Login to Amazon ECR
           id: login-ecr
