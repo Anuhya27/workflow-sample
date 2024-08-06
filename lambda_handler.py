@@ -26,7 +26,7 @@ def lambda_handler(event, context):
     
     # Set up credentials
     scopes = ['https://www.googleapis.com/auth/spreadsheets.readonly']
-    creds = Credentials.from_service_account_file('analysis-sheets-36029f131547.json', scopes=scopes)
+    creds = Credentials.from_service_account_file(creds_json, scopes=scopes)
     
     # Build the service
     service = build('sheets', 'v4', credentials=creds)
