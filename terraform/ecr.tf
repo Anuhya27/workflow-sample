@@ -2,7 +2,9 @@
 resource "aws_ecr_repository" "program_assessment_repo" {
   name                 = var.RESOURCE_NAME
   image_tag_mutability = "IMMUTABLE"
-
+  encryption_configuration {
+    encryption_type = "AES256"  # Default encryption type
+  }
   tags = {
     "Name"               = var.Name
     "Cost_Center_Name"   = var.Cost_Center_Name
