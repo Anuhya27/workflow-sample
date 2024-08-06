@@ -8,9 +8,11 @@ FROM public.ecr.aws/lambda/python:3.12
 
 # RUN apk --no-cache add gcc build-base
 
-RUN yum install -y gcc gcc-c++ make \
-    && yum clean all \
-    && rm -rf /var/cache/yum
+# Install build dependencies
+RUN apt-get update \
+    && apt-get install -y gcc g++ make \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt  ${LAMBDA_TASK_ROOT}
 # Copy the files to working directory in the container
