@@ -30,7 +30,7 @@ jobs:
             if [[ ${{ github.ref }} == refs/heads/test ]]; then
               echo "BUCKET_NAME=ecr-sync" >> $GITHUB_ENV
               echo "ENV_NAME=uat" >> $GITHUB_ENV
-              echo "TF_VAR_RESOURCE_NAME=member_profile_uat" >> $GITHUB_ENV
+              echo "TF_VAR_RESOURCE_NAME=member_profile_uat_1" >> $GITHUB_ENV
             elif [[ ${{ github.ref }} == refs/heads/master ]]; then
               echo "BUCKET_NAME=petm" >> $GITHUB_ENV
               echo "ENV_NAME=prod" >> $GITHUB_ENV
