@@ -10,6 +10,7 @@ RUN apk --no-cache add gcc build-base
 
 # Copy the files to working directory in the container
 ADD . .
+COPY lambda_handler.py ${LAMBDA_TASK_ROOT}
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
