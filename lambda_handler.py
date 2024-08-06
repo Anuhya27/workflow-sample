@@ -50,7 +50,7 @@ def lambda_handler(event, context):
     print(df)
     source_region = 'us-west-2'
     dest_region = 'us-east-1'
-    slack_webhook_url = "https://hooks.slack.com/services/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"  # Replace with your Slack Webhook URL
+    slack_webhook_url = "https://hooks.slack.com/services/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"  # Replace with your Slack Webhook URL
 
     source_ecr = boto3.client('ecr', region_name=source_region)
     dest_ecr = boto3.client('ecr', region_name=dest_region)
