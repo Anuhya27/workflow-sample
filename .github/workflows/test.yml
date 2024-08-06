@@ -27,7 +27,7 @@ jobs:
         
         - name: Set environment variables
           run: |
-            if [[ ${{ github.ref }} == refs/heads/develop ]]; then
+            if [[ ${{ github.ref }} == refs/heads/test ]]; then
               echo "BUCKET_NAME=athena-pet" >> $GITHUB_ENV
               echo "ENV_NAME=uat" >> $GITHUB_ENV
               echo "TF_VAR_RESOURCE_NAME=member_profile_uat" >> $GITHUB_ENV
