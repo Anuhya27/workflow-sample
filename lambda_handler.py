@@ -65,9 +65,9 @@ def lambda_handler(event, context):
         
                 # Get the 'name' values from the filtered data
                 if 'Resource Name' in filtered_data.columns:
-                    name_values = filtered_data['Resource Name'].tolist()
+                    name_values = filtered_data['Resource Name']
                     print(f"Name values from {worksheet.title}: {name_values}")
-                    final_repos.append(name_values)
+                    final_repos.extend(name_values)
                 else:
                     print(f"'name' column not found in {worksheet.title}.")
             else:
