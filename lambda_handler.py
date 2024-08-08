@@ -128,7 +128,7 @@ def lambda_handler(event, context):
         except Exception as e:
             print(f"Error processing {repo_name}: {e}")
             continue
-        
+
     print("deleted_images_report")
     print(deleted_images_report)
     # Send Slack notification if there are deleted images
