@@ -62,6 +62,7 @@ def lambda_handler(event, context):
                 (data['Region'].str.contains('us-west-2'))
             ]
     
+    
             # Get the 'name' values from the filtered data
             if 'Resource Name' in filtered_data.columns:
                 name_values = filtered_data['Resource Name']
