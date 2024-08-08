@@ -4,6 +4,7 @@ import requests
 import pandas as pd
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
+import pygsheets
     
 def lambda_handler(event, context):
     s3_bucket = 'ecr-sync'
@@ -24,34 +25,46 @@ def lambda_handler(event, context):
             'body': json.dumps(f'Error fetching JSON file from S3: {e}')
         }
     
-    # Set up credentials
-    # creds_dict = json.loads(creds_json)
-    # scopes = ['https://www.googleapis.com/auth/cloud-platform']
+    gc = pygsheets.authorize(custom_credentials=json_data)
 
-    scopes = ['https://www.googleapis.com/auth/spreadsheets.readonly']
-    creds = Credentials.from_service_account_info(creds_json, scopes=scopes)
-    
-    # Build the service
-    service = build('sheets', 'v4', credentials=creds)
-    
-    # Spreadsheet ID and range
     spreadsheet_id = '17DNAKfvOICZlV7w7E3fJKQce4PYRxwEtTkRioTDGSzc'
-    range_name = 'Sheet1!A1:D10'  # Adjust this to your desired range
+
+    # Open the spreadsheet using the ID
+    spreadsheet = gc.open_by_key(spreadsheet_id)
+
+    # Get all worksheets in the spreadsheet
+    worksheets = spreadsheet.worksheets()
+    final_repos = []
+    # Iterate through each worksheet and read data
+    for worksheet in worksheets:
+        if worksheet.title == 'api_KEY':
+            # Get all values from the worksheet
+            print(f"Reading data from: {worksheet.title}")
+            
+            data = worksheet.get_as_df()
+            # print(data[data['Region'].str.contains('us-west-2')])
+            
+            if ('AWS Service' in data.columns) and ('Region' in data.columns):
+                # Filter rows where 'resource' is 'ECR' and 'region' is 'us-east-1'
+                filtered_data = data[
+                    (data['AWS Service'].str.contains('ECR')) &
+                    (data['Region'].str.contains('us-west-2'))
+                ]
+        
+                # Get the 'name' values from the filtered data
+                if 'Resource Name' in filtered_data.columns:
+                    name_values = filtered_data['Resource Name'].tolist()
+                    print(f"Name values from {worksheet.title}: {name_values}")
+                    final_repos.append(name_values)
+                else:
+                    print(f"'name' column not found in {worksheet.title}.")
+            else:
+                print(f"'resource' or 'region' column not found in ")
+    print(final_repos)
     
-    # Call the Sheets API
-    sheet = service.spreadsheets()
-    result = sheet.values().get(spreadsheetId=spreadsheet_id, range=range_name).execute()
-    values = result.get('values', [])
-    
-    # Convert to pandas DataFrame
-    df = pd.DataFrame(values[1:], columns=values[0])
-    
-    # Display the DataFrame
-    print(df)
     source_region = 'us-west-2'
     dest_region = 'us-east-1'
     slack_webhook_url = "https://hooks.slack.com/services/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"  # Replace with your Slack Webhook URL
-
     source_ecr = boto3.client('ecr', region_name=source_region)
     dest_ecr = boto3.client('ecr', region_name=dest_region)
 
