@@ -2,7 +2,9 @@ name: Building Docker Image
 on:
     push:
       branches: [ test ]
-
+      paths:
+        - "scripts/lambda_handler.py"
+        - "requirements.txt"
 
 jobs:
   build-and-deploy:
