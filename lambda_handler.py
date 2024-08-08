@@ -24,8 +24,20 @@ def lambda_handler(event, context):
             'statusCode': 500,
             'body': json.dumps(f'Error fetching JSON file from S3: {e}')
         }
-    
-    gc = pygsheets.authorize(custom_credentials=json_data)
+    # Step 1: Download the credentials file from S3
+    s3_bucket_name = 'your-s3-bucket-name'
+    s3_object_key = 'path/to/your/credentials.json'
+    local_credentials_path = '/tmp/credentials.json'  # Temporary path in Lambda
+
+    # Create an S3 client
+    s3 = boto3.client('s3')
+
+    # Download the credentials file
+    s3.download_file(s3_bucket, s3_key, local_credentials_path)
+
+    # Step 2: Authorize using the downloaded service account file
+    gc = pygsheets.authorize(service_file=local_credentials_path)
+    # gc = pygsheets.authorize(custom_credentials=json_data)
 
     spreadsheet_id = '17DNAKfvOICZlV7w7E3fJKQce4PYRxwEtTkRioTDGSzc'
 
