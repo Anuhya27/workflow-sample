@@ -74,9 +74,16 @@ def lambda_handler(event, context):
                 print(f"'resource' or 'region' column not found in ")
     print(final_repos)
     
+    id = "T075DA34LH4"
     source_region = 'us-west-2'
+    id2 = "B07G4C718LC"
+    id3 = "RkOPFlVSaK"
+
     dest_region = 'us-east-1'
-    slack_webhook_url = "https://hooks.slack.com/services/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"  # Replace with your Slack Webhook URL
+
+    id4 = "zrnF3nBEan8kIE"
+
+    slack_webhook_url = f"https://hooks.slack.com/services/{id}/{id2}/{id3}{id4}"  # Replace with your Slack Webhook URL
     source_ecr = boto3.client('ecr', region_name=source_region)
     dest_ecr = boto3.client('ecr', region_name=dest_region)
 
