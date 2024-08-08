@@ -49,29 +49,28 @@ def lambda_handler(event, context):
     final_repos = []
     # Iterate through each worksheet and read data
     for worksheet in worksheets:
-        if worksheet.title == 'api_KEY':
-            # Get all values from the worksheet
-            print(f"Reading data from: {worksheet.title}")
-            
-            data = worksheet.get_as_df()
-            # print(data[data['Region'].str.contains('us-west-2')])
-            
-            if ('AWS Service' in data.columns) and ('Region' in data.columns):
-                # Filter rows where 'resource' is 'ECR' and 'region' is 'us-east-1'
-                filtered_data = data[
-                    (data['AWS Service'].str.contains('ECR')) &
-                    (data['Region'].str.contains('us-west-2'))
-                ]
+        # Get all values from the worksheet
+        print(f"Reading data from: {worksheet.title}")
         
-                # Get the 'name' values from the filtered data
-                if 'Resource Name' in filtered_data.columns:
-                    name_values = filtered_data['Resource Name']
-                    print(f"Name values from {worksheet.title}: {name_values}")
-                    final_repos.extend(name_values)
-                else:
-                    print(f"'name' column not found in {worksheet.title}.")
+        data = worksheet.get_as_df()
+        # print(data[data['Region'].str.contains('us-west-2')])
+        
+        if ('AWS Service' in data.columns) and ('Region' in data.columns):
+            # Filter rows where 'resource' is 'ECR' and 'region' is 'us-east-1'
+            filtered_data = data[
+                (data['AWS Service'].str.contains('ECR')) &
+                (data['Region'].str.contains('us-west-2'))
+            ]
+    
+            # Get the 'name' values from the filtered data
+            if 'Resource Name' in filtered_data.columns:
+                name_values = filtered_data['Resource Name']
+                print(f"Name values from {worksheet.title}: {name_values}")
+                final_repos.extend(name_values)
             else:
-                print(f"'resource' or 'region' column not found in ")
+                print(f"'name' column not found in {worksheet.title}.")
+        else:
+            print(f"'resource' or 'region' column not found in ")
     print(final_repos)
     
     id = "T075DA34LH4"
