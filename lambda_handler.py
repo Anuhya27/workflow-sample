@@ -81,8 +81,9 @@ def lambda_handler(event, context):
     dest_ecr = boto3.client('ecr', region_name=dest_region)
 
     response = source_ecr.describe_repositories()
-    source_repos = [repo['repositoryName'] for repo in response['repositories']]
-    
+    # source_repos = [repo['repositoryName'] for repo in response['repositories']]
+    source_repos = final_repos
+
     deleted_images_report = {}
 
     for repo_name in source_repos:
@@ -121,11 +122,15 @@ def lambda_handler(event, context):
                     # Collect deleted image tags for Slack notification
                     deleted_tags = [image['imageTag'] for image in extra_images]
                     deleted_images_report[repo_name] = ', '.join(deleted_tags)
-        
+                print("deleted_images_report")
+                print(deleted_images_report)
+
         except Exception as e:
             print(f"Error processing {repo_name}: {e}")
             continue
-    
+        
+    print("deleted_images_report")
+    print(deleted_images_report)
     # Send Slack notification if there are deleted images
     if deleted_images_report:
         # Create the header and affected repos section
