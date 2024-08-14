@@ -1,13 +1,12 @@
-import sys
+from argparse import ArgumentParser
 
 def main(name):
     print(f"Hello, {name}!")
 
 if __name__ == "__main__":
-    # Check if an argument is provided
-    if len(sys.argv) != 2:
-        print("Usage: python hello.py <name>")
-        sys.exit(1)
+    parser = ArgumentParser(description="Prints a personalized greeting.")
+    parser.add_argument("--name", required=True, help="Name to greet")
+    args = parser.parse_args()
 
-    name = sys.argv[1]
-    main(name)
+    main(args.name)
+    
