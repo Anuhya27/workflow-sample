@@ -26,7 +26,7 @@ resource "aws_batch_job_definition" "program_assessment" {
   ]
 
   container_properties = jsonencode({
-    image            = "${aws_ecr_repository.program_assessment_repo.repository_url}:latest",
+    image            = "${aws_ecr_repository.program_assessment_repo.repository_url}:latest2",
     command          = ["echo", "Starting Program assessment..."],
     executionRoleArn = var.iam_role_arn,
     jobRoleArn       = var.iam_role_arn,
