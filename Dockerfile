@@ -24,7 +24,7 @@ VOLUME ["/app/config"]
 
 # Fix 1: Replace non-breaking space with a regular space
 COPY requirements.txt  ${LAMBDA_TASK_ROOT}
-COPY scripts/lambda_handler.py ${LAMBDA_TASK_ROOT}
+COPY lambda_handler.py ${LAMBDA_TASK_ROOT}
 
 WORKDIR /app
 
