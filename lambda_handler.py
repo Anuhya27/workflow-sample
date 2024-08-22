@@ -33,12 +33,13 @@ def lambda_handler(event, context):
     # gc = pygsheets.authorize(custom_credentials=json_data)
     config = configparser.ConfigParser()
     config.read('config.ini')
-
-    aws_secrets = config['aws']['secrets']
+    # print(c)
+    # aws_secrets = config['aws']['secrets']
+    print("read_config")
     spreadsheet_id = config['main']['spreadsheet_id']
     # spreadsheet_id = ''
     print(spreadsheet_id)
-    
+
     spreadsheet = gc.open_by_key(spreadsheet_id)
 
     worksheets = spreadsheet.worksheets()
