@@ -1,23 +1,39 @@
-# Base image
+# # Base image
+# FROM public.ecr.aws/lambda/python:3.12-x86_64
+
+# # RUN apt-get update \
+# #     && apt-get install -y gcc g++ make \
+# #     && apt-get clean \
+# #     && rm -rf /var/lib/apt/lists/*
+
+# COPY requirements.txt  ${LAMBDA_TASK_ROOT}
+# # Copy the files to working directory in the container
+# COPY lambda_handler.py ${LAMBDA_TASK_ROOT}
+
+
+# # Install any needed packages specified in requirements.txt
+# RUN pip install --no-cache-dir -r requirements.txt
+# COPY config.ini /app/config.ini
+# # Run script.py when the container launches
+# CMD [ "lambda_handler.lambda_handler" ]
+
 FROM public.ecr.aws/lambda/python:3.12-x86_64
 
-# RUN apt-get update \
-#     && apt-get install -y gcc g++ make \
-#     && apt-get clean \
-#     && rm -rf /var/lib/apt/lists/*
+# Define volume mount point for config.ini
+VOLUME ["/app/config"]
 
+# Fix 1: Replace non-breaking space with a regular space
 COPY requirements.txt  ${LAMBDA_TASK_ROOT}
-# Copy the files to working directory in the container
-COPY lambda_handler.py ${LAMBDA_TASK_ROOT}
+COPY scripts/lambda_handler.py ${LAMBDA_TASK_ROOT}
 
+WORKDIR /app
 
-# Install any needed packages specified in requirements.txt
+# Fix 2: Replace non-breaking space with a regular space
+COPY config.ini /app/config.ini  
+
 RUN pip install --no-cache-dir -r requirements.txt
-COPY config.ini /app/config.ini
-# Run script.py when the container launches
-CMD [ "lambda_handler.lambda_handler" ]
 
-
+CMD [ "python", "lambda_handler.py" ]
 # # Use the official Python image from the Docker Hub
 # FROM python:3.9-slim
 
