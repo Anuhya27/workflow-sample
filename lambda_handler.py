@@ -2,6 +2,8 @@ import boto3
 import json
 import requests
 import pandas as pd
+import configparser
+
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 import pygsheets
@@ -10,59 +12,49 @@ def lambda_handler(event, context):
     s3_bucket = 'ecr-sync'
     s3_key = 'analysis-sheets-36029f131547.json'
 
-    # Initialize S3 client
     s3_client = boto3.client('s3')
 
-    # Fetch the JSON file from S3
     try:
         response = s3_client.get_object(Bucket=s3_bucket, Key=s3_key)
         json_data = response['Body'].read().decode('utf-8')
-        creds_json = json.loads(json_data)
     except Exception as e:
         print(f"Error fetching JSON file from S3: {e}")
         return {
             'statusCode': 500,
             'body': json.dumps(f'Error fetching JSON file from S3: {e}')
         }
-    # Step 1: Download the credentials file from S3
-    s3_bucket_name = 'your-s3-bucket-name'
-    s3_object_key = 'path/to/your/credentials.json'
-    local_credentials_path = '/tmp/credentials.json'  # Temporary path in Lambda
+    local_credentials_path = '/tmp/credentials.json'  
 
-    # Create an S3 client
     s3 = boto3.client('s3')
 
-    # Download the credentials file
     s3.download_file(s3_bucket, s3_key, local_credentials_path)
 
-    # Step 2: Authorize using the downloaded service account file
     gc = pygsheets.authorize(service_file=local_credentials_path)
     # gc = pygsheets.authorize(custom_credentials=json_data)
+    config = configparser.ConfigParser()
+    config.read('config.ini')
 
-    spreadsheet_id = '17DNAKfvOICZlV7w7E3fJKQce4PYRxwEtTkRioTDGSzc'
-
-    # Open the spreadsheet using the ID
+    aws_secrets = config['aws']['secrets']
+    spreadsheet_id = config['main']['spreadsheet_id']
+    # spreadsheet_id = ''
+    print(spreadsheet_id)
+    
     spreadsheet = gc.open_by_key(spreadsheet_id)
 
-    # Get all worksheets in the spreadsheet
     worksheets = spreadsheet.worksheets()
     final_repos = []
-    # Iterate through each worksheet and read data
     for worksheet in worksheets:
-        # Get all values from the worksheet
         print(f"Reading data from: {worksheet.title}")
         
         data = worksheet.get_as_df()
         # print(data[data['Region'].str.contains('us-west-2')])
         
         if ('AWS Service' in data.columns) and ('Region' in data.columns):
-            # Filter rows where 'resource' is 'ECR' and 'region' is 'us-east-1'
             filtered_data = data[
                 (data['AWS Service'].str.contains('ECR')) &
                 (data['Region'].str.contains('us-west-2'))
             ]
     
-            # Get the 'name' values from the filtered data
             if 'Resource Name' in filtered_data.columns:
                 name_values = filtered_data['Resource Name']
                 print(f"Name values from {worksheet.title}: {name_values}")
@@ -82,7 +74,7 @@ def lambda_handler(event, context):
 
     id4 = "zrnF3nBEan8kIE"
 
-    slack_webhook_url = f"https://hooks.slack.com/services/{id}/{id2}/{id3}{id4}"  # Replace with your Slack Webhook URL
+    slack_webhook_url = f"https://hooks.slack.com/services/{id}/{id2}/{id3}{id4}" 
     source_ecr = boto3.client('ecr', region_name=source_region)
     dest_ecr = boto3.client('ecr', region_name=dest_region)
 
@@ -137,16 +129,14 @@ def lambda_handler(event, context):
 
     print("deleted_images_report")
     print(deleted_images_report)
-    # Send Slack notification if there are deleted images
     if deleted_images_report:
-        # Create the header and affected repos section
         blocks = [
-            {"type": "divider"},  # Add a divider on top
+            {"type": "divider"},  
             {
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": ":hammer_and_wrench: *ECR Replica Sync* :rocket:"  # Add an emoji to the header
+                    "text": ":hammer_and_wrench: *ECR Replica Sync* :rocket:"  
                 },
             },
             {
@@ -165,7 +155,6 @@ def lambda_handler(event, context):
             },
         ]
     
-        # Create the payload
         payload = {
             "blocks": blocks
         }
