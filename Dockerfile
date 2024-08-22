@@ -20,16 +20,17 @@
 FROM public.ecr.aws/lambda/python:3.12-x86_64
 
 # Define volume mount point for config.ini
-VOLUME ["/app/config"]
+# VOLUME ["config"]
 
 # Fix 1: Replace non-breaking space with a regular space
 COPY requirements.txt  ${LAMBDA_TASK_ROOT}
 COPY lambda_handler.py ${LAMBDA_TASK_ROOT}
+COPY config.ini  ${LAMBDA_TASK_ROOT}
 
-WORKDIR /app
+# WORKDIR /app
 
 # Fix 2: Replace non-breaking space with a regular space
-COPY config.ini /app/config.ini  
+# COPY config.ini config.ini  
 
 RUN pip install --no-cache-dir -r requirements.txt
 
