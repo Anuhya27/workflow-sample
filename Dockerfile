@@ -5,4 +5,4 @@ FROM python:3.9-slim
 COPY main.py .
 
 # Set the default command to run the Python script
-CMD ["python3", "main.py"]
+CMD ["python", "main.py"]
