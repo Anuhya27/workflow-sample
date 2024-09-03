@@ -2,7 +2,7 @@ name: Build and Upload Wheel
 
 on:
   push:
-    branches: [ test ]
+    branches: [ test_1 ]
 
 
 jobs:

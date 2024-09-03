@@ -1,7 +1,7 @@
 name: Building Docker Image
 on:
     push:
-      branches: [ test ]
+      branches: [ test_1 ]
 
 jobs:
   build-and-deploy:
