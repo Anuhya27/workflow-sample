@@ -41,7 +41,15 @@ resource "aws_batch_job_definition" "program_assessment" {
         value = "${var.aws_batch_JD_memory}",
       },
     ],
+    runtimePlatform = {
+      operatingSystemFamily = "LINUX",
+      cpuArchitecture       = "X86_64",
+    }
 
+    # runtimePlatform = {
+    #   operatingSystemFamily = "LINUX",
+    #   cpuArchitecture       = var.hardware_details.cpu_architecture
+    # }
   })
 
   tags = {

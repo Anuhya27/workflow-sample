@@ -45,15 +45,17 @@ jobs:
         
         - name: Terraform Init
           run: |
-            terraform init -backend-config="bucket=${{ env.BUCKET_NAME }}"
+            export TF_LOG=DEBUG
+            terraform init -backend-config="bucket=${{ env.BUCKET_NAME }}"  -var-file="./vars/vars-${{ env.ENV_NAME }}.tfvars"
 
         - name: Terraform Plan
           run: |
-            terraform plan -input=false -var-file=./vars/vars-${{ env.ENV_NAME }}.tfvars
+            export TF_LOG=DEBUG
+            terraform plan -input=false -var-file="./vars/vars-${{ env.ENV_NAME }}.tfvars"
 
         - name: Terraform Apply
           run: |
-            terraform apply -auto-approve -var-file=./vars/vars-${{ env.ENV_NAME }}.tfvars
+            terraform apply -auto-approve -var-file="./vars/vars-${{ env.ENV_NAME }}.tfvars"
 
     ecr_image_update:
       name: ECR Image Update
