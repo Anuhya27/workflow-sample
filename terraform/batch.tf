@@ -42,10 +42,6 @@ resource "aws_batch_job_definition" "program_assessment" {
       },
     ],
 
-    runtimePlatform = {
-      operatingSystemFamily = "LINUX",
-      cpuArchitecture       = "X86_64",
-    }
   })
 
   tags = {
