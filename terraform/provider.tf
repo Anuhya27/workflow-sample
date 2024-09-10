@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.0"
+      version = "~> 5.0"
     }
 
   }
@@ -10,7 +10,6 @@ terraform {
   backend "s3" {
     key = "apps/program_assessment/terraform/terraform.tfstate"
   }
-  required_version = "~> 1.0"
 }
 
 provider "aws" {
