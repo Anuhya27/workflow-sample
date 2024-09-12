@@ -1,8 +1,8 @@
 resource "aws_scheduler_schedule" "cron" {
   name       = "test_schedule"
   group_name = "default"
-  depends_on = [aws_iam_role.scheduler-batch-role, aws_batch_job_definition.batch_job,
-  aws_batch_job_queue.batch_queue]
+  depends_on = [ aws_batch_job_definition.program_assessment,
+  aws_batch_job_queue.program_assessment]
   flexible_time_window {
     mode = "OFF"
   }
