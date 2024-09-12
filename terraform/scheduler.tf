@@ -7,7 +7,7 @@ resource "aws_scheduler_schedule" "cron" {
     mode = "OFF"
   }
 
-  schedule_expression          = "cron(12 12 ? * 5 *)"
+  schedule_expression          = "cron(15 16 ? * 5 *)"
   schedule_expression_timezone = "Asia/Calcutta" # Default is UTC
   description                  = "submitJob Batch event"
 
@@ -17,7 +17,7 @@ resource "aws_scheduler_schedule" "cron" {
 
     input = jsonencode({
       "JobName" : "${aws_batch_job_definition.program_assessment.name}",
-      "JobDefinition" : "${aws_batch_job_definition.program_assessment.name}",
+      "JobDefinition" : "${aws_batch_job_definition.program_assessment.arn}",
       "JobQueue" : "${aws_batch_job_queue.program_assessment.arn}"
     })
   }
