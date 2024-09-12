@@ -7,7 +7,7 @@ resource "aws_scheduler_schedule" "cron" {
     mode = "OFF"
   }
 
-  schedule_expression          = "cron(15 16 ? * 5 *)"
+  schedule_expression          = "cron(35 16 ? * 5 *)"
   schedule_expression_timezone = "Asia/Calcutta" # Default is UTC
   description                  = "submitJob Batch event"
 
