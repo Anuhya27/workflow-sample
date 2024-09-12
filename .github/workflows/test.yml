@@ -46,12 +46,10 @@ jobs:
         
         - name: Terraform Init
           run: |
-            export TF_LOG=DEBUG
             terraform init -backend-config="bucket=${{ env.BUCKET_NAME }}"  -var-file="./vars/vars-${{ env.ENV_NAME }}.tfvars"
 
         - name: Terraform Plan
           run: |
-            export TF_LOG=DEBUG
             terraform plan -input=false -var-file="./vars/vars-${{ env.ENV_NAME }}.tfvars"
 
         - name: Terraform Apply
