@@ -7,13 +7,13 @@ resource "aws_scheduler_schedule" "cron" {
     mode = "OFF"
   }
 
-  schedule_expression          = "30 11 * * 4"
+  schedule_expression          = "35 11 * * 4"
   schedule_expression_timezone = "Asia/Calcutta" # Default is UTC
   description                  = "submitJob Batch event"
 
   target {
     arn      = "arn:aws:scheduler:::aws-sdk:batch:submitJob"
-    role_arn = aws_iam_role.scheduler-batch-role.arn
+    role_arn = var.iam_role_arn
 
     input = jsonencode({
       "JobName" : "${aws_batch_job_definition.program_assessment.name}",
