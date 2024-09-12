@@ -16,9 +16,9 @@ resource "aws_scheduler_schedule" "cron" {
     role_arn = aws_iam_role.scheduler-batch-role.arn
 
     input = jsonencode({
-      "JobName" : "${aws_batch_job_definition.batch_job.name}",
-      "JobDefinition" : "${aws_batch_job_definition.batch_job.name}",
-      "JobQueue" : "${aws_batch_job_queue.batch_queue.arn}"
+      "JobName" : "${aws_batch_job_definition.program_assessment.name}",
+      "JobDefinition" : "${aws_batch_job_definition.program_assessment.name}",
+      "JobQueue" : "${aws_batch_job_queue.program_assessment.arn}"
     })
   }
 }
