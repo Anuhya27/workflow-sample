@@ -3,7 +3,10 @@ resource "aws_batch_job_queue" "program_assessment" {
   name                 = var.RESOURCE_NAME
   state                = "ENABLED"
   priority             = 1
-  compute_environments = var.compute_environments_arn
+  compute_environment_order {
+    order               = 1
+    compute_environment = var.compute_environments_arn
+  }
   tags = {
     "Name"               = var.Name
     "Cost_Center_Name"   = var.Cost_Center_Name
