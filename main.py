@@ -1,4 +1,8 @@
 # from datetime import datetime
+from pandarallel import pandarallel
+from simple_salesforce import Salesforce
+
+pandarallel.initialize(nb_workers=30)
 
 def print_time():
     print("Hello, there!")

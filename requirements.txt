@@ -1,3 +1,5 @@
 requests
-pandas
 pygsheets
+pandarallel==1.5.0
+pandas==2.2.2
+simple_salesforce==1.11.1
