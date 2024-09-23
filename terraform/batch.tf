@@ -27,7 +27,7 @@ resource "aws_batch_job_definition" "program_assessment" {
   platform_capabilities = ["FARGATE"]
 
   container_properties = jsonencode({
-    image            = "${aws_ecr_repository.program_assessment_repo.repository_url}:latest",
+    image            = "${aws_ecr_repository.program_assessment_repo.repository_url}:0.1.3",
     command          = ["python", "main.py"],
     executionRoleArn = var.iam_role_arn,
     jobRoleArn       = var.iam_role_arn,
