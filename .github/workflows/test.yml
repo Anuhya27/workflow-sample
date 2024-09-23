@@ -125,8 +125,8 @@ jobs:
           
         - name: Set environment variables
           run: |
-            if [[ ${{ github.ref }} == refs/heads/uat ]]; then
-              echo "BUCKET_NAME=athena-pet" >> $GITHUB_ENV
+            if [[ ${{ github.ref }} == refs/heads/test ]]; then
+              echo "BUCKET_NAME=program-assessment" >> $GITHUB_ENV
             elif [[ ${{ github.ref }} == refs/heads/prod ]]; then
               echo "BUCKET_NAME=petm" >> $GITHUB_ENV
             fi
