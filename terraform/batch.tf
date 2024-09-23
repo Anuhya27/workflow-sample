@@ -33,6 +33,7 @@ resource "aws_batch_job_definition" "program_assessment" {
     command          = ["echo", "Starting Program assessment..."],
     executionRoleArn = var.iam_role_arn,
     jobRoleArn       = var.iam_role_arn,
+    readonlyRootFilesystem = true,
 
     resourceRequirements = [
       {
@@ -48,11 +49,28 @@ resource "aws_batch_job_definition" "program_assessment" {
       operatingSystemFamily = "LINUX",
       cpuArchitecture       = "X86_64",
     }
-
+    # ephemeralStorage = {
+    #     sizeInGiB = 10
+    # }
     # runtimePlatform = {
     #   operatingSystemFamily = "LINUX",
     #   cpuArchitecture       = var.hardware_details.cpu_architecture
     # }
+    mountPoints = [
+      {
+        containerPath = "/tmp_dir"
+        readOnly      = false
+        sourceVolume  = "tmp"
+      }
+    ]
+    volumes = [
+      {
+        name = "tmp"
+        host = {
+          sourcePath = "/tmp"
+        }
+      }
+    ]
   })
 
   tags = {
