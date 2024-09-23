@@ -28,7 +28,7 @@ jobs:
         - name: Set environment variables
           run: |
             if [[ ${{ github.ref }} == refs/heads/test ]]; then
-              echo "BUCKET_NAME=ecr-sync" >> $GITHUB_ENV
+              echo "BUCKET_NAME=program-assessment" >> $GITHUB_ENV
               echo "ENV_NAME=uat" >> $GITHUB_ENV
               echo "TF_VAR_RESOURCE_NAME=program_assessment_uat" >> $GITHUB_ENV
             elif [[ ${{ github.ref }} == refs/heads/master ]]; then
