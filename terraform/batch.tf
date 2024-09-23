@@ -53,7 +53,7 @@ resource "aws_batch_job_definition" "program_assessment" {
     # Mount Points
     mountPoints = [
       {
-        containerPath = "/tmp_dir"
+        containerPath = "/tmp"
         readOnly      = false
         sourceVolume  = "tmp"
       }
