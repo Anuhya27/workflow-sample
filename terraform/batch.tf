@@ -19,14 +19,12 @@ resource "aws_batch_job_queue" "program_assessment" {
   }
 }
 
-########### PROGRAM ASSESSMENT BATCH JOB DEFINITION ##############
+########### PROGRAM ASSESSMENT BATCH JOB DEFINITION ############### Job Definition
 resource "aws_batch_job_definition" "program_assessment" {
   name = var.RESOURCE_NAME
   type = "container"
 
-  platform_capabilities = [
-    "FARGATE",
-  ]
+  platform_capabilities = ["FARGATE"]
 
   container_properties = jsonencode({
     image            = "${aws_ecr_repository.program_assessment_repo.repository_url}:latest",
@@ -37,25 +35,22 @@ resource "aws_batch_job_definition" "program_assessment" {
 
     resourceRequirements = [
       {
-        type  = "VCPU",
-        value = "${var.aws_batch_JD_vcpu}",
+        type  = "VCPU"
+        value = var.aws_batch_JD_vcpu
       },
       {
-        type  = "MEMORY",
-        value = "${var.aws_batch_JD_memory}",
-      },
-    ],
+        type  = "MEMORY"
+        value = var.aws_batch_JD_memory
+      }
+    ]
+
+    # Runtime Platform
     runtimePlatform = {
       operatingSystemFamily = "LINUX",
       cpuArchitecture       = "X86_64",
     }
-    # ephemeralStorage = {
-    #     sizeInGiB = 10
-    # }
-    # runtimePlatform = {
-    #   operatingSystemFamily = "LINUX",
-    #   cpuArchitecture       = var.hardware_details.cpu_architecture
-    # }
+
+    # Mount Points
     mountPoints = [
       {
         containerPath = "/tmp_dir"
@@ -63,16 +58,16 @@ resource "aws_batch_job_definition" "program_assessment" {
         sourceVolume  = "tmp"
       }
     ]
+
+    # Volumes
     volumes = [
       {
         name = "tmp"
-        host = {
-          sourcePath = "/tmp"
-        }
       }
     ]
   })
 
+  # Tags
   tags = {
     "Name"               = var.Name
     "Cost_Center_Name"   = var.Cost_Center_Name
