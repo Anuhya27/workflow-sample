@@ -10,7 +10,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v2
+
+      - name: List files
+        run: ls -la
+        
       - name: Run sample script
         run: |
             echo "Running with input: ${{ inputs.input1 }}"
