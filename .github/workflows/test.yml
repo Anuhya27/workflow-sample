@@ -2,7 +2,7 @@ name: Terraform and Job Definition Update
 
 on:
   push:
-    branches: [ test ]
+    branches: [ test_1 ]
 
 jobs:
     terraform:
