@@ -1,22 +1,27 @@
-name: Example Workflow
-on: push
+name: Reusable Workflow
+on:
+  workflow_call:
+    inputs:
+      input1:
+        required: true
+        type: string
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+
+      - uses: actions/checkout@v3
         with:
           repository: Anuhya27/workflow_sample  # Ensure this is correct
           token: ${{ secrets.ACTION_TOKEN }}  # Use PAT for private repos
           ref: "test"
-
-      - name: List Files
+  
+      - name: List files
         run: ls -la
 
-      - name: Run Sample Script
+      - name: Run sample script
         run: |
-          echo "Running with input..."
-          chmod +x test_run.sh  # Ensure test_run.sh exists and is executable
-          ./test_run.sh         # Execute the script
+            echo "Running with input: ${{ inputs.input1 }}"
+            chmod +x test_run.sh
+            ./test_run.sh
