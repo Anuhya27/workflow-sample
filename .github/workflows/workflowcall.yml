@@ -11,11 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          repository: Anuhya27/workflow_sample
+          ref: main
 
       - name: List files
         run: ls -la
-        
+
       - name: Run sample script
         run: |
             echo "Running with input: ${{ inputs.input1 }}"
