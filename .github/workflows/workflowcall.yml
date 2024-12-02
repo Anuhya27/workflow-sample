@@ -14,14 +14,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      # - uses: actions/checkout@v3
-      #   with:
-      #     repository: Anuhya27/workflow_sample  # Ensure this is correct
-      #     token: ${{ secrets.token }}  # Use PAT for private repos
-      #     ref: "test"
+      - uses: actions/checkout@v3
+        with:
+          repository: Anuhya27/workflow_sample  # Ensure this is correct
+          token: ${{ secrets.token }}  # Use PAT for private repos
+          ref: "test"
   
       - name: List files
         run: ls -la
+
+      - name: pwd
+        run: pwd
 
       - name: Run sample script
         run: |
