@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: Anuhya27/workflow_sample  # Ensure this is correct
           token: ${{ secrets.token }}  # Use PAT for private repos
