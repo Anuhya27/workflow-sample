@@ -14,12 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
-          repository: ${{ github.repository }}  # Use the calling repository
-          token: ${{ secrets.token }}
-          fetch-depth: 0 
+          repository: Anuhya27/workflow_sample  # Ensure this is correct
+          token: ${{ secrets.token }}  # Use PAT for private repos
+          ref: "test"
   
       - name: List files
         run: ls -la
