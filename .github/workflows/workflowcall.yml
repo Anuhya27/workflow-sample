@@ -1,6 +1,9 @@
 name: Reusable Workflow
 on:
   workflow_call:
+    secrets:
+      token:
+        required: true
     inputs:
       input1:
         required: true
