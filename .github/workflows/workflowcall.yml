@@ -32,4 +32,3 @@ jobs:
             chmod +x test_run.sh
             ./test_run.sh
 
-            name: Reusable Workflow
