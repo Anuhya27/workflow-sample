@@ -16,9 +16,9 @@ jobs:
 
       - uses: actions/checkout@v4
         with:
-          repository: Anuhya27/workflow_sample  # Ensure this is correct
+          repository: ${{ github.repository }}  # Ensure this is correct
           token: ${{ secrets.token }}  # Use PAT for private repos
-          ref: "test"
+          # ref: "test"
   
       - name: List files
         run: ls -la
